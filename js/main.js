@@ -33475,7 +33475,7 @@ function getBusLocation() {
                     timeLeft: 60 - currentTime.seconds(),
                     totalTime: 60,
                     cycles: runs + 1,
-                    nextStop: busStopOrder[i2 + 1]
+                    nextStop: busStopOrder[i2 + 1] || busStopOrder[0]
                 };
             }
             else if(lastTime) {
@@ -33489,13 +33489,15 @@ function getBusLocation() {
                         timeLeft: timeLeft,
                         totalTime: totalTime,
                         cycles: runs + 1,
-                        nextStop: busStopOrder[i2 + 1]
+                        nextStop: busStopOrder[i2 + 1] || busStopOrder[0]
                     };
                 }
             }
             lastTime = actualTime;
         }
     }
+
+    return false; // bus service is inactive
 }
 
 module.exports = {
@@ -81038,10 +81040,18 @@ var flinders = require("flinders-api");
 function updateElements() {
     var data = flinders.bus.getBusLocation();
 
-    $("#bus-location").text("Currently " + data.position);
-    $("#progress-bar-parent").attr("data-tooltip",data.timeLeft + " seconds left");
-    $("#progress-bar-child").css("width",(data.percentage * 100) + "%");
-    $("#bus-next-stop").text("Next stop: " + data.nextStop);
+    if(data) {
+        $("#bus-location").text("Currently " + data.position);
+        $("#progress-bar-parent").attr("data-tooltip",data.timeLeft + " seconds left");
+        $("#progress-bar-child").css("width",(data.percentage * 100) + "%");
+        $("#bus-next-stop").text("Next stop: " + data.nextStop);
+    }
+    else {
+        $("#bus-location").text("Bus service is inactive");
+        $("#progress-bar-parent").attr("data-tooltip","No busses available!");
+        $("#progress-bar-child").css("width","0%");
+        $("#bus-next-stop").text("");
+    }
 }
 
 $(document).ready(function() {
