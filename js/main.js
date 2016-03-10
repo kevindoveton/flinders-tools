@@ -81035,4 +81035,6 @@ function Node (value, prev, next, list) {
 var $ = require("jquery-browserify");
 var flinders = require("flinders-api");
 
+console.log(flinders.bus.getBusLocation());
+
 },{"flinders-api":186,"jquery-browserify":231}]},{},[433]);
