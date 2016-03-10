@@ -1,2 +1,2 @@
 @echo off
-browserify src/index.js > main.js
+browserify src/index.js > js/main.js
