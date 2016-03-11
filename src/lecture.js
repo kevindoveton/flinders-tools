@@ -91,6 +91,10 @@ $(document).ready(function() {
 
                         videojs("video-" + idx);
                     }
+
+                    $('#accordion').collapsible({
+                        accordion: true
+                    });
                 }
             }
             else {
