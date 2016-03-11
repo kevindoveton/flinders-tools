@@ -71784,6 +71784,7 @@ function proxy(dura,fn) {
 }
 
 $(document).ready(function() {
+    Materialize.toast("Click a topic to view all available lecture recordings",4500)
     var idx = 0;
     function lookupVideo() {
         Materialize.toast("Loading...",1500,"blue")
@@ -71841,7 +71842,18 @@ $(document).ready(function() {
                         );
                         $("#accordion").append(li);
 
-                        videojs("video-" + idx);
+                        videojs("video-" + idx,{
+                            playbackRates: [
+                                0.25,
+                                0.5,
+                                0.75,
+                                1,
+                                1.25,
+                                1.5,
+                                1.75,
+                                2
+                            ]
+                        });
                     }
 
                     $("#accordion").collapsible({
