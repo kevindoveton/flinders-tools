@@ -2,8 +2,20 @@
     <head>
         <title>FUTools - Lectures</title>
 
-        <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+        <link type="text/css" rel="stylesheet" href="video-js/video-js.min.css" media="screen,projection" />
+
+        <style>
+            .vjs-big-play-button {
+                left: 0;
+                right: 0;
+                position: absolute;
+                margin: auto;
+                top: 0;
+                bottom: 0;
+            }
+        </style>
     </head>
     <body style="height: 100%">
     	<header class="fill">
@@ -15,20 +27,23 @@
                         </div>
                     </li>
                     <ul class="list">
-                        <li><a class="item-subject">Meme</a></li>
-                        <li><a class="item-subject">Memes</a></li>
                     </ul>
                 </ul>
             </div>
     	</header>
 
-        <div class="container">
+        <main style="padding-left: 400px;" class="fill">
+            <div class="container" style="height: 80%;">
+                <ul id="accordion" class="collapsible popout active" data-collapsible="accordion">
 
-        </div>
+                </ul>
+            </div>
+        </main>
     </body>
     <script src="js/jquery.min.js"></script>
     <script src="video-js/video.min.js"></script>
     <script src="js/list.min.js"></script>
     <script src="js/materialize.min.js"></script>
+    <script src="js/topiclist.js"></script>
     <script src="js/lecture.js"></script>
 </html>
