@@ -42,6 +42,7 @@ function proxy(dura,fn) {
 $(document).ready(function() {
     var idx = 0;
     function lookupVideo() {
+        Materialize.toast("Loading...",1500,"blue")
         XGet("http://video.flinders.edu.au/lectureResources/vod/" + $(this).find(".code").text().toUpperCase() + "_2016.xml",function(res) {
             if(res.status.http_code == 200) {
                 var data = $.parseXML(res.contents).children[0].children[0].children;
@@ -50,14 +51,23 @@ $(document).ready(function() {
                     Materialize.toast("No videos available!",3000,"red")
                     return;
                 }
-                $("#accordion").html("");
+
+                Materialize.toast("Loading complete",3000,"green")
+                $("#accordion").remove();
+
+
+                $(".container").append(
+                    $(document.createElement("ul"))
+                        .attr("id","accordion")
+                        .attr("class","collapsible popout")
+                        .attr("data-collapsible","accordion")
+                );
 
                 for(var i=0;i < data.length;i++) {
                     idx++;
                     if(data[i].tagName === "item") {
                         var doc = $(data[i]);
                         var li = $(document.createElement("li"));
-                        console.log(data[i])
                         li.append(
                             $(document.createElement("div"))
                                 .attr("class","collapsible-header")
@@ -70,25 +80,18 @@ $(document).ready(function() {
                         ).append(
                             $(document.createElement("div"))
                                 .attr("class","collapsible-body")
-                                .css("width","100%")
-                                .css("height","350px")
                                 .append(
-                                    $(document.createElement("p"))
+                                    $(document.createElement("video"))
+                                        .attr("class","video-js vjs-default-skin")
+                                        .attr("id","video-" + idx)
+                                        .attr("preload","none")
+                                        .prop("controls",true)
                                         .css("width","100%")
-                                        .css("height","100%")
+                                        .css("height","350px")
                                         .append(
-                                            $(document.createElement("video"))
-                                                .attr("class","video-js vjs-default-skin")
-                                                .attr("id","video-" + idx)
-                                                .attr("preload","none")
-                                                .prop("controls",true)
-                                                .css("width","100%")
-                                                .css("height","100%")
-                                                .append(
-                                                    $(document.createElement("source"))
-                                                        .attr("src",doc.find("enclosure").attr("url"))
-                                                        .attr("type","video/mp4")
-                                                )
+                                            $(document.createElement("source"))
+                                                .attr("src",doc.find("enclosure").attr("url"))
+                                                .attr("type","video/mp4")
                                         )
                                 )
                         );
@@ -97,7 +100,7 @@ $(document).ready(function() {
                         videojs("video-" + idx);
                     }
 
-                    $('#accordion').collapsible({
+                    $("#accordion").collapsible({
                         accordion: true
                     });
                 }
