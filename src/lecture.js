@@ -42,7 +42,7 @@ function proxy(dura,fn) {
 $(document).ready(function() {
     var idx = 0;
     function lookupVideo() {
-        XGet("http://video.flinders.edu.au/lectureResources/vod/" + $(this).find(".code").text().toUpperCase() + "_2016.xml",function(res) {
+        XGet("https://video.flinders.edu.au/lectureResources/vod/" + $(this).find(".code").text().toUpperCase() + "_2016.xml",function(res) {
             if(res.status.http_code == 200) {
                 var data = $.parseXML(res.contents).children[0].children[0].children;
 
