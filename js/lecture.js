@@ -71757,7 +71757,7 @@ function XGet(url,callback) {
 
     window[cb] = callback;
 
-    $("body").append("<script src='http://www.whateverorigin.org/get?url=" + encodeURIComponent(url) + "&callback=" + cb + "'></script>");
+    $("body").append("<script src='https://whateverorigin.herokuapp.com/get?url=" + encodeURIComponent(url) + "&callback=" + cb + "'></script>");
 }
 
 var userList = new List("subjectList",options,topicDatabase.data);
@@ -71786,7 +71786,7 @@ function proxy(dura,fn) {
 $(document).ready(function() {
     var idx = 0;
     function lookupVideo() {
-        XGet("https://video.flinders.edu.au/lectureResources/vod/" + $(this).find(".code").text().toUpperCase() + "_2016.xml",function(res) {
+        XGet("http://video.flinders.edu.au/lectureResources/vod/" + $(this).find(".code").text().toUpperCase() + "_2016.xml",function(res) {
             if(res.status.http_code == 200) {
                 var data = $.parseXML(res.contents).children[0].children[0].children;
 
