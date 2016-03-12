@@ -110,6 +110,10 @@ $(document).ready(function() {
                                 2
                             ]
                         });
+
+                        $("#video-" + idx)
+                            .css("width","")
+                            .css("height","");
                     }
 
                     $("#accordion").collapsible({
