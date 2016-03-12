@@ -111,7 +111,7 @@ $(document).ready(function() {
                             ]
                         });
 
-                        $("#video-" + idx)
+                        $("#video-" + idx + "_html5_api")
                             .css("width","")
                             .css("height","");
                     }
