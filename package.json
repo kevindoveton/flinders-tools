@@ -18,6 +18,7 @@
   "homepage": "https://github.com/SwadicalRag/flinders-tools#readme",
   "dependencies": {
     "flinders-api": "^1.0.0",
-    "jquery-browserify": "^1.8.1"
+    "jquery-browserify": "^1.8.1",
+    "murmur": "0.0.2"
   }
 }

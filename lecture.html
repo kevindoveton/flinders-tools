@@ -15,12 +15,22 @@
                 top: 0;
                 bottom: 0;
             }
+
+            #main-loader {
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                position: absolute;
+                margin: auto;
+                z-index: 100000;
+            }
         </style>
     </head>
-    <body style="height: 100%">
-    	<header class="fill">
+    <body style="height: 100%; width: 100%; position: absolute; background: transparent url('img/hall.jpg') no-repeat fixed center center / cover;">
+    	<header>
             <div id="subjectList">
-                <ul class="side-nav fixed" style="width: 400px;">
+                <ul id="slide-out" class="side-nav">
                     <li>
                         <div class="search-wrapper">
                             <input id="search" placeholder="Search for topics..." class="search-thing" type="search" required>
@@ -32,12 +42,65 @@
             </div>
     	</header>
 
-        <main style="padding-left: 400px;" class="fill">
+        <main>
             <div class="container" style="height: 80%;">
+                <div class="card-panel white">
+                    <h5>Flinders University Lecture Viewer</h5>
+                    <p>
+                        Click the green button on the bottom-right of the page to view all available 2016 subjects.
+                    </p>
+                    <p>
+                        Click a subject to view all available lectures
+                    </p>
+                </div>
 
+                <div class="preloader-wrapper big active" id="main-loader">
+                    <div class="spinner-layer spinner-blue">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-red">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-yellow">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="spinner-layer spinner-green">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <a style="position: absolute; right: 50px; bottom: 50px;" data-activates="slide-out" class="button-collapse btn-floating btn-large waves-effect waves-light green"><i class="material-icons">view_list</i></a>
         </main>
     </body>
+    <script src="js/js.cookie.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/materialize.min.js"></script>
     <script src="js/jquery.history.js"></script>
@@ -45,5 +108,11 @@
     <script src="video-js/videojs-hotkeys.min.js"></script>
     <script src="js/list.min.js"></script>
     <script src="js/topiclist.js"></script>
+    <script>
+        $(".button-collapse").sideNav({
+            menuWidth: 400,
+            closeOnClick: true
+        });
+    </script>
     <script src="js/lecture.js"></script>
 </html>
