@@ -71853,6 +71853,11 @@ $(document).ready(function() {
                                 1.75,
                                 2
                             ]
+                        }).ready(function() {
+                            this.hotkeys({
+                                volumeStep: 0.1,
+                                seekStep: 5
+                            });
                         });
 
                         $("#video-" + idx + "_html5_api")
