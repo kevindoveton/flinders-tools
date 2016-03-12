@@ -71794,7 +71794,7 @@ function lookupVideo(unused,topic) {
 
     History.pushState({
         topic: topic
-    },"aaa","?topic=" + topic);
+    },"FUTools - Lectures - " + topic,"?topic=" + topic);
 }
 
 function getVideo(topic) {
