@@ -1,6 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
 function hashFnv32a(str, asString, seed) {
     /*jshint bitwise:false */
     var i, l,
@@ -17,14 +14,14 @@ function hashFnv32a(str, asString, seed) {
     return hval >>> 0;
 }
 
-// let flinders = require("flinders-api");
+// var flinders = require("flinders-api");
 
 //from https://stackoverflow.com/questions/11582512/how-to-get-url-parameters-with-javascript/11582513
 function getURLParameter(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
 }
 
-let options = {
+var options = {
     valueNames: ["name","code"],
     searchClass: "search-thing",
     item: "<li><a href=\"javascript:void(0);\" class=\"truncate class-result\"><span class=\"code\"></span> - <span class=\"name\"></span></a></li>",
@@ -33,19 +30,19 @@ let options = {
 };
 
 function XGet(url,callback) {
-    let cb = "C" + Math.floor(Math.random()*10^6);
+    var cb = "C" + Math.floor(Math.random()*10^6);
 
     window[cb] = callback;
 
     $("body").append("<script src='https://whateverorigin.herokuapp.com/get?url=" + encodeURIComponent(url) + "&callback=" + cb + "'></script>");
 }
 
-let userList = new List("subjectList",options,topicDatabase.data);
+var userList = new List("subjectList",options,topicDatabase.data);
 userList.sort("item-subject",{order: "asc"});
 
 function proxy(dura,fn) {
     dura *= 1000;
-    let lastcalled = 0;
+    var lastcalled = 0;
     function proxied() {
         if(Date.now() - lastcalled >= dura) {
             lastcalled = Date.now();
@@ -63,7 +60,7 @@ function proxy(dura,fn) {
     return proxied;
 }
 
-let video_idx = 0;
+var video_idx = 0;
 function lookupVideo(unused,topic) {
     topic = topic || $(this).find(".code").text().toUpperCase();
 
@@ -78,14 +75,14 @@ function getVideo(topic) {
     XGet("http://video.flinders.edu.au/lectureResources/vod/" + topic + "_2016.xml",function(res) {
         $("#main-loader").fadeOut(100);
         if(res.status.http_code == 200) {
-            let data = $.parseXML(res.contents).children[0].children[0].children;
+            var data = $.parseXML(res.contents).children[0].children[0].children;
 
             if(data.length === 0) {
                 Materialize.toast("No videos available!",3000,"red");
                 return;
             }
 
-            Materialize.toast("Loading complete",3000,"green");
+            Materialize.toast("Loading compvare",3000,"green");
             $("#accordion").remove();
 
             $(".container").append(
@@ -95,13 +92,13 @@ function getVideo(topic) {
                     .attr("data-collapsible","accordion")
             );
 
-            for(let i=0;i < data.length;i++) {
+            for(var i=0;i < data.length;i++) {
                 if(data[i].tagName === "item") {
                     video_idx++;
-                    let doc = $(data[i]);
-                    let li = $(document.createElement("li"));
+                    var doc = $(data[i]);
+                    var li = $(document.createElement("li"));
 
-                    let videoHash = hashFnv32a(doc.find("guid").text(),true);
+                    var videoHash = hashFnv32a(doc.find("guid").text(),true);
 
                     li.append(
                         $(document.createElement("div"))
@@ -177,7 +174,7 @@ function getVideo(topic) {
             });
 
             $(".lecture-option").click(function() {
-                let hash = $(this).attr("data-video-hash");
+                var hash = $(this).attr("data-video-hash");
 
                 History.pushState({
                     topic: topic,
@@ -197,10 +194,10 @@ var currentTopic;
 var currentVid;
 
 History.Adapter.bind(window,"statechange",function() {
-    let State = History.getState();
+    var State = History.getState();
 
-    let topic = State.data.topic;
-    let vid = State.data.vid;
+    var topic = State.data.topic;
+    var vid = State.data.vid;
 
     if(!topic) {return;}
 
@@ -230,5 +227,3 @@ $(document).ready(function() {
         getVideo(getURLParameter("topic"));
     }
 });
-
-},{}]},{},[1]);

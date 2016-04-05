@@ -33776,6 +33776,44 @@ function getTopicDetails(subject,topicNumber,year,callback) {
     });
 }
 
+function getTopicList(query,callback) {
+    request({
+        method: "GET",
+        uri: endpoint4 + "getTopicList",
+        qs: {
+            format: "json",
+            tdtopicnumber: query.topicNumber || "",
+            tdtopicsubject: query.subjectArea || "",
+            tdtopicfulltitlelower: query.subjectName || "",
+            tdyear: query.year || "",
+            test: ""
+        }
+    },function(err,res,body) {
+        if(err) {
+            callback(err,[]);
+        }
+        else {
+            if(res.statusCode == 200) {
+                try {
+                    let data = JSON.parse(body);
+                    if(data.SUCCESS == 1) {
+                        callback(null,data.TOPICLIST.TOPICS);
+                    }
+                    else {
+                        callback(data.EXCEPTION.Message,data);
+                    }
+                }
+                catch(errMsg) {
+                    callback(errMsg);
+                }
+            }
+            else {
+                callback("HTTP status code is " + res.statusCode + " (not 200!)",[]);
+            }
+        }
+    });
+}
+
 function searchTopics(query,callback) {
     if(!query.year) {
         return callback("'year' parameter in query object missing!");
@@ -33809,6 +33847,9 @@ function searchTopics(query,callback) {
                     let data = JSON.parse(body);
                     if(data.SUCCESS == 1) {
                         callback(null,data.AVAILABILITYLIST.AVAILABILITIES);
+                    }
+                    else if(data.SUCCESS == 2) {
+                        callback(null,[]);
                     }
                     else {
                         callback(data.EXCEPTION.Message,data);
@@ -33888,7 +33929,8 @@ module.exports = {
     searchTopics: searchTopics,
     getTimetable: getTimetable,
     searchTimetable: searchTimetable,
-    getTopicDetails: getTopicDetails
+    getTopicDetails: getTopicDetails,
+    getTopicList: getTopicList
 };
 
 },{"request":367}],189:[function(require,module,exports){
