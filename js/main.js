@@ -85,6 +85,7 @@ var subject_1 = require("./routes/lectures/subject");
 var index = new index_1.Index("/", page);
 var lectures = new lectures_1.Lectures("/lectures", page);
 var lectureSubject = new subject_1.LectureSubject("/lectures/:topicCode", page);
+page.base("/flinders-tools");
 $(document).ready(function () {
     page({
         hashbang: true
@@ -158,7 +159,7 @@ var LectureSubscription = (function (_super) {
         this.props.removeSub(this.props.code);
     };
     LectureSubscription.prototype.render = function () {
-        var redirectURL = "/lectures/" + this.props.code;
+        var redirectURL = "./lectures/" + this.props.code;
         return React.createElement(Semantify.Item, null, React.createElement(Semantify.Content, {className: "right floated"}, React.createElement("a", {href: redirectURL}, React.createElement(Semantify.Button, {className: "blue"}, "Watch")), React.createElement(Semantify.Button, {className: "red", onClick: this.unsubscribe.bind(this)}, "Unsubscribe")), React.createElement(Semantify.Content, null, React.createElement(Semantify.Header, null, this.props.code), React.createElement("div", {className: "description"}, lectures.topicInfo(this.props.code).name)));
     };
     return LectureSubscription;
@@ -274,7 +275,7 @@ var LectureSubscriptionUpdates = (function (_super) {
             if (i > 20) {
                 return;
             }
-            var redirect = "/lectures/" + event.subjectCode;
+            var redirect = "./lectures/" + event.subjectCode;
             return React.createElement("div", {className: "event"}, React.createElement(Semantify.Content, {className: "event"}, React.createElement("div", {className: "summary"}, React.createElement("a", {href: redirect, className: "user"}, event.subjectCode), " added a new video.", React.createElement("div", {className: "date"}, event.date, " ago"))));
         });
         if (this.state.events.length == 0) {

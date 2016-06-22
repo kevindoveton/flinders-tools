@@ -19,6 +19,8 @@ let index = new Index("/",page);
 let lectures = new Lectures("/lectures",page);
 let lectureSubject = new LectureSubject("/lectures/:topicCode",page);
 
+page.base("/flinders-tools");
+
 $(document).ready(() => {
     page({
         hashbang: true

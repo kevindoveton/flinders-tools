@@ -20,7 +20,7 @@ class LectureSubscription extends React.Component<{code:string,addSub:(topicCode
     }
 
     render() {
-        let redirectURL = "/lectures/" + this.props.code;
+        let redirectURL = "./lectures/" + this.props.code;
         return <Semantify.Item>
             <Semantify.Content className="right floated">
                 <a href={redirectURL}>
@@ -203,7 +203,7 @@ class LectureSubscriptionUpdates extends React.Component<{subscriptions:string[]
 
         let subs = this.state.events.map((event,i) => {
             if(i > 20) {return;}
-            let redirect = "/lectures/" + event.subjectCode;
+            let redirect = "./lectures/" + event.subjectCode;
 
             return <div className="event">
                 <Semantify.Content className="event">
