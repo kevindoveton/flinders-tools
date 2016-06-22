@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es3",
+        "module": "commonjs",
+        "sourceMap": true,
+		"outDir": "js/bin",
+        "watch": true,
+        "jsx": "react",
+        "moduleResolution": "node"
+        // "outFile": "js/out.js"
+        // "declaration": true
+    },
+    "exclude": [
+        "node_modules",
+        ".vscode"
+    ]
+}

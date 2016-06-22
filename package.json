@@ -1,0 +1,39 @@
+{
+  "name": "flinders-tools",
+  "version": "1.0.0",
+  "description": "Tools for Flinders University students",
+  "main": "N/A",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://swadicalrag@github.com/SwadicalRag/flinders-tools.git"
+  },
+  "author": "SwadicalRag",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SwadicalRag/flinders-tools/issues"
+  },
+  "homepage": "https://github.com/SwadicalRag/flinders-tools#readme",
+  "dependencies": {
+    "cheerio": "^0.20.0",
+    "jquery": "^3.0.0",
+    "js-cookie": "^2.1.2",
+    "moment-timezone": "^0.5.4",
+    "page": "^1.7.1",
+    "plyr": "^1.8.2",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-semantify": "^0.5.1",
+    "reactcss": "^1.0.3"
+  },
+  "devDependencies": {
+    "gulp-notify": "^2.2.0",
+    "tsify": "^0.16.0",
+    "vinyl-source-stream": "^1.1.0",
+    "browserify": "^13.0.1",
+    "gulp": "^3.9.1",
+    "watchify": "^3.7.0"
+  }
+}

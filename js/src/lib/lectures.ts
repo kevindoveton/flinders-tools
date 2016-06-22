@@ -1,0 +1,73 @@
+import * as cheerio from "cheerio";
+import * as request from "./request";
+
+import * as moment from "moment-timezone";
+
+let topicDatabase = require("../topics");
+
+interface ILecture {
+    url: string;
+    title: string;
+    date: string;
+    unix: number;
+}
+
+let endpoint = "http://video.flinders.edu.au/lectureResources/vod/";
+
+export function get(classID:string,year:(string|number),callback:(err,lectures:ILecture[]) => void) {
+    request.get(endpoint + classID.toUpperCase() + "_" + year + ".xml",(body,status) => {
+        if(status == 200) {
+            let $ = cheerio.load(body);
+
+            let lectures:ILecture[] = [];
+
+            $("channel").find("item").each((i,el) => {
+                let pubDate = moment($(el).find("pubDate").text(),"ddd, DD MMM YYYY HH:mm:ss ZZ");
+
+                lectures[lectures.length] = {
+                    url: $(el).find("guid").text(),
+                    title: $(el).find("title").text(),
+                    date: moment.duration(moment().diff(pubDate)).humanize(),
+                    unix: pubDate.unix()
+                };
+            });
+
+            lectures.sort((a,b) => {
+                return b.unix - a.unix;
+
+            });
+
+            callback(null,lectures);
+        }
+        else {
+            callback("HTTP status code is " + status + " (not 200!)",[]);
+        }
+    });
+}
+
+interface ITopic {
+    id: number;
+    name: string;
+    code: string;
+    year: string;
+    semester: string;
+    location: string;
+}
+
+export function topicInfo(topicID:string):ITopic {
+    for(let i=0;i < topicDatabase.topicDatabase.length;i++) {
+        let topic = topicDatabase.topicDatabase[i];
+        if(topic.code == topicID) {
+            return topic;
+        }
+    }
+
+    return {
+        id: 0,
+        code: topicID,
+        name: "Unknown subject",
+        year: "0",
+        semester: "S1",
+        location: "Bedford Park"
+    }
+}
