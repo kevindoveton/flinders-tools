@@ -77,8 +77,8 @@ window["$"] = $;
 window["jQuery"] = $;
 require("../../semantic/semantic.min.js");
 var page = require("page");
-var plyr = require("plyr");
-plyr.setup();
+// let plyr = require("plyr");
+// plyr.setup();
 var index_1 = require("./routes/index");
 var lectures_1 = require("./routes/lectures");
 var subject_1 = require("./routes/lectures/subject");
@@ -92,7 +92,7 @@ $(document).ready(function () {
     });
 });
 
-},{"../../semantic/semantic.min.js":331,"./routes/index":5,"./routes/lectures":6,"./routes/lectures/subject":7,"jquery":100,"page":110,"plyr":113}],4:[function(require,module,exports){
+},{"../../semantic/semantic.min.js":331,"./routes/index":5,"./routes/lectures":6,"./routes/lectures/subject":7,"jquery":100,"page":110}],4:[function(require,module,exports){
 "use strict";
 var Page = (function () {
     function Page(path, page) {
@@ -257,7 +257,6 @@ var LectureSubscriptionUpdates = (function (_super) {
         }
     };
     LectureSubscriptionUpdates.prototype.componentDidUpdate = function () {
-        console.log("WEW", this.lastSubscriptions, this.props.subscriptions.length);
         if (typeof this.lastSubscriptions !== "number") {
             this.lastSubscriptions = this.props.subscriptions.length;
             return;
@@ -402,7 +401,7 @@ var LectureViewModal = (function (_super) {
         this.setState(this.state);
     };
     LectureViewModal.prototype.render = function () {
-        return React.createElement("div", {className: "ui basic modal", id: "viewLectureModal"}, React.createElement("i", {className: "close icon"}), React.createElement("div", {className: "header"}, "Lecture Player 2.0 (@ ", this.state.playbackSpeed, "x speed)"), React.createElement("div", {className: "content"}, React.createElement("div", {className: "description"}, React.createElement("video", {id: "mainVideo", src_placeholder: this.props.url, controls: true}))), React.createElement("div", {className: "actions"}, React.createElement("div", {className: "two fluid ui inverted buttons"}, React.createElement("div", {onClick: this.speedUp.bind(this), className: "ui basic inverted button"}, "Speed up"), React.createElement("div", {onClick: this.slowDown.bind(this), className: "ui basic inverted button"}, "Slow down"))));
+        return React.createElement("div", {className: "ui basic modal", id: "viewLectureModal"}, React.createElement("i", {className: "close icon"}), React.createElement("div", {className: "header", src_placeholder: this.props.url}, "Lecture Player 2.0 (@ ", this.state.playbackSpeed, "x speed)"), React.createElement("div", {className: "content"}, React.createElement("div", {className: "description"}, React.createElement("video", {id: "mainVideo", controls: true}))), React.createElement("div", {className: "actions"}, React.createElement("div", {className: "two fluid ui inverted buttons"}, React.createElement("div", {onClick: this.speedUp.bind(this), className: "ui basic inverted button"}, "Speed up"), React.createElement("div", {onClick: this.slowDown.bind(this), className: "ui basic inverted button"}, "Slow down"))));
     };
     return LectureViewModal;
 }(React.Component));

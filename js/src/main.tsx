@@ -8,8 +8,8 @@ require("../../semantic/semantic.min.js")
 
 let page = require("page");
 
-let plyr = require("plyr");
-plyr.setup();
+// let plyr = require("plyr");
+// plyr.setup();
 
 import {Index} from "./routes/index";
 import {Lectures} from "./routes/lectures";

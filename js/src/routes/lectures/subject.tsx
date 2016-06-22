@@ -72,10 +72,10 @@ class LectureViewModal extends React.Component<{url:string},{playbackSpeed:numbe
     render() {
         return <div className="ui basic modal" id="viewLectureModal">
             <i className="close icon"></i>
-            <div className="header">Lecture Player 2.0 (@ {this.state.playbackSpeed}x speed)</div>
+            <div className="header" src_placeholder={this.props.url}>Lecture Player 2.0 (@ {this.state.playbackSpeed}x speed)</div>
             <div className="content">
                 <div className="description">
-                    <video id="mainVideo" src_placeholder={this.props.url} controls></video>
+                    <video id="mainVideo" controls></video>
                 </div>
             </div>
             <div className="actions">

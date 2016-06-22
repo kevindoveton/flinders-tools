@@ -179,7 +179,6 @@ class LectureSubscriptionUpdates extends React.Component<{subscriptions:string[]
 
     lastSubscriptions:number;
     componentDidUpdate() {
-        console.log("WEW",this.lastSubscriptions,this.props.subscriptions.length);
         if(typeof this.lastSubscriptions !== "number") {
             this.lastSubscriptions = this.props.subscriptions.length;
             return;
