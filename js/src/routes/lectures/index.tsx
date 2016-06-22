@@ -203,10 +203,12 @@ class LectureSubscriptionUpdates extends React.Component<{subscriptions:string[]
 
         let subs = this.state.events.map((event,i) => {
             if(i > 20) {return;}
+            let redirect = "/lectures/" + event.subjectCode;
+
             return <div className="event">
                 <Semantify.Content className="event">
                     <div className="summary">
-                        <a className="user">{event.subjectCode}</a> added a new video.
+                        <a href={redirect} className="user">{event.subjectCode}</a> added a new video.
                         <div className="date">{event.date} ago</div>
                     </div>
                 </Semantify.Content>

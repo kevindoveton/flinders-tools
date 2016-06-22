@@ -274,7 +274,8 @@ var LectureSubscriptionUpdates = (function (_super) {
             if (i > 20) {
                 return;
             }
-            return React.createElement("div", {className: "event"}, React.createElement(Semantify.Content, {className: "event"}, React.createElement("div", {className: "summary"}, React.createElement("a", {className: "user"}, event.subjectCode), " added a new video.", React.createElement("div", {className: "date"}, event.date, " ago"))));
+            var redirect = "/lectures/" + event.subjectCode;
+            return React.createElement("div", {className: "event"}, React.createElement(Semantify.Content, {className: "event"}, React.createElement("div", {className: "summary"}, React.createElement("a", {href: redirect, className: "user"}, event.subjectCode), " added a new video.", React.createElement("div", {className: "date"}, event.date, " ago"))));
         });
         if (this.state.events.length == 0) {
             subs = [React.createElement("div", null, "Nothing new happened, check back later.")];
