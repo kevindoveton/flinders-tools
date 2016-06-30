@@ -120,7 +120,7 @@ class LectureItem extends React.Component<{title:string,date:string,url:string,v
         let watched:any = cookie.getJSON("ft-watched-lectures");
 
         if(!watched) {
-            cookie.set("ft-watched-lectures",[]);
+            cookie.set("ft-watched-lectures",[],{expires: 36500});
             return cookie.getJSON("ft-watched-lectures");
         }
 
@@ -145,7 +145,7 @@ class LectureItem extends React.Component<{title:string,date:string,url:string,v
         for(let i=0;i < watched.length;i++) {
             if(watched[i] == url) {
                 watched.splice(i,1);
-                cookie.set("ft-watched-lectures",watched);
+                cookie.set("ft-watched-lectures",watched,{expires: 36500});
                 return true;
             }
         }
@@ -163,7 +163,7 @@ class LectureItem extends React.Component<{title:string,date:string,url:string,v
         }
 
         watched[watched.length] = url;
-        cookie.set("ft-watched-lectures",watched);
+        cookie.set("ft-watched-lectures",watched,{expires: 36500});
 
         return true;
     }

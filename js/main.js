@@ -301,7 +301,7 @@ var LecturesApp = (function (_super) {
     LecturesApp.prototype.getSubscriptions = function () {
         var subs = cookie.getJSON("ft-subs");
         if (!subs) {
-            cookie.set("ft-subs", []);
+            cookie.set("ft-subs", [], { expires: 365 });
             return cookie.getJSON("ft-subs");
         }
         return subs;
@@ -310,7 +310,7 @@ var LecturesApp = (function (_super) {
         for (var i = 0; i < this.state.subscriptions.length; i++) {
             if (this.state.subscriptions[i] == topicCode) {
                 this.state.subscriptions.splice(i, 1);
-                cookie.set("ft-subs", this.state.subscriptions);
+                cookie.set("ft-subs", this.state.subscriptions, { expires: 365 });
                 this.setState(this.state);
                 return true;
             }
@@ -324,7 +324,7 @@ var LecturesApp = (function (_super) {
             }
         }
         this.state.subscriptions[this.state.subscriptions.length] = topicCode;
-        cookie.set("ft-subs", this.state.subscriptions);
+        cookie.set("ft-subs", this.state.subscriptions, { expires: 365 });
         this.setState(this.state);
         return true;
     };
@@ -493,7 +493,7 @@ var LectureItem = (function (_super) {
     LectureItem.prototype.getWatchedList = function () {
         var watched = cookie.getJSON("ft-watched-lectures");
         if (!watched) {
-            cookie.set("ft-watched-lectures", []);
+            cookie.set("ft-watched-lectures", [], { expires: 365 });
             return cookie.getJSON("ft-watched-lectures");
         }
         return watched;
@@ -512,7 +512,7 @@ var LectureItem = (function (_super) {
         for (var i = 0; i < watched.length; i++) {
             if (watched[i] == url) {
                 watched.splice(i, 1);
-                cookie.set("ft-watched-lectures", watched);
+                cookie.set("ft-watched-lectures", watched, { expires: 365 });
                 return true;
             }
         }
@@ -526,7 +526,7 @@ var LectureItem = (function (_super) {
             }
         }
         watched[watched.length] = url;
-        cookie.set("ft-watched-lectures", watched);
+        cookie.set("ft-watched-lectures", watched, { expires: 365 });
         return true;
     };
     LectureItem.prototype.componentDidMount = function () {

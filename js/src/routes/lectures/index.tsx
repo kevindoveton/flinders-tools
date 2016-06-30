@@ -244,7 +244,7 @@ class LecturesApp extends React.Component<{},{subscriptions:string[]}> {
         let subs:any = cookie.getJSON("ft-subs");
 
         if(!subs) {
-            cookie.set("ft-subs",[]);
+            cookie.set("ft-subs",[],{expires: 36500});
             return cookie.getJSON("ft-subs");
         }
 
@@ -255,7 +255,7 @@ class LecturesApp extends React.Component<{},{subscriptions:string[]}> {
         for(let i=0;i < this.state.subscriptions.length;i++) {
             if(this.state.subscriptions[i] == topicCode) {
                 this.state.subscriptions.splice(i,1);
-                cookie.set("ft-subs",this.state.subscriptions);
+                cookie.set("ft-subs",this.state.subscriptions,{expires: 36500});
                 this.setState(this.state);
                 return true;
             }
@@ -272,7 +272,7 @@ class LecturesApp extends React.Component<{},{subscriptions:string[]}> {
         }
 
         this.state.subscriptions[this.state.subscriptions.length] = topicCode;
-        cookie.set("ft-subs",this.state.subscriptions);
+        cookie.set("ft-subs",this.state.subscriptions,{expires: 36500});
         this.setState(this.state);
 
         return true;
@@ -345,7 +345,7 @@ class OptionsModal extends React.Component<{},{}> {
 
     setYearInternal(year:number) {
         if(year == year) {
-            cookie.set("ft-lecture-year",year);
+            cookie.set("ft-lecture-year",year,{expires: 36500});
         }
     }
 
