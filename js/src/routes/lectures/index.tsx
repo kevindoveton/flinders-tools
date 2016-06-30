@@ -8,7 +8,15 @@ import * as cookie from "js-cookie";
 
 import * as lectures from "../../lib/lectures";
 
+import * as querystring from "querystring";
+
 let Semantify = require("react-semantify");
+
+let yearOverride;
+
+function getYear() {
+    return yearOverride || parseInt(cookie.get("ft-lecture-year"));
+}
 
 class LectureSubscription extends React.Component<{code:string,addSub:(topicCode:string)=>boolean,removeSub:(topicCode:string)=>boolean},{}> {
     constructor(props) {
@@ -83,7 +91,7 @@ class LectureAdditionModal extends React.Component<{addSub:(topicCode:string)=>b
                 <div className="description">
                     <div className="ui header">Type in a subject code</div>
                         <div className="ui search" id="addLectureSearchBox">
-                            <input className="prompt" id="topicSearchBox" placeholder="2016 Topics..." type="text" />
+                            <input className="prompt" id="topicSearchBox" placeholder={getYear() + " Topics..."} type="text" />
                             <div className="results"></div>
                         </div>
                     </div>
@@ -98,13 +106,14 @@ class LectureAdditionModal extends React.Component<{addSub:(topicCode:string)=>b
         </div>
     }
 }
+
 class LectureSubscriptions extends React.Component<{subscriptions:string[],addSub:(topicCode:string)=>boolean,removeSub:(topicCode:string)=>boolean},{}> {
     constructor(props) {
         super(props);
     }
 
     addTopic() {
-        window["$"](".ui.modal").modal("show");
+        window["$"]("#addLectureModal").modal("show");
     }
 
     render() {
@@ -155,7 +164,7 @@ class LectureSubscriptionUpdates extends React.Component<{subscriptions:string[]
 
         for(let i=0;i < this.props.subscriptions.length;i++) {
             let subjectCode = this.props.subscriptions[i];
-            lectures.get(subjectCode,2016,(err,lectures) => {
+            lectures.get(subjectCode,getYear(),(err,lectures) => {
                 for(let i=0;i < lectures.length;i++) {
                     this.state.events[this.state.events.length] = {
                         unix: lectures[i].unix,
@@ -283,14 +292,103 @@ class LecturesApp extends React.Component<{},{subscriptions:string[]}> {
     }
 }
 
+class OptionsModal extends React.Component<{},{}> {
+    constructor(props) {
+        super(props);
+
+        if(!cookie.get("ft-lecture-year")) {
+            this.setYearInternal(2016);
+        }
+    }
+
+    componentDidMount() {
+        window["$"]("#optionsModal").modal();
+        let list = require("../../topics").topicDatabase;
+
+        window["$"]("#addYearSearchBox").search({
+            source: [
+                {
+                    year: "2011"
+                },
+                {
+                    year: "2012"
+                },
+                {
+                    year: "2013"
+                },
+                {
+                    year: "2014"
+                },
+                {
+                    year: "2015"
+                },
+                {
+                    year: "2016"
+                }
+            ],
+            searchFields: [
+                "year"
+            ],
+            cache: false,
+            fields: {
+                title: "year"
+            }
+        });
+    }
+
+    setYear() {
+        let year = parseInt($("#yearSearchBox").val());
+        $("#yearSearchBox").val("");
+
+        this.setYearInternal(year);
+    }
+
+    setYearInternal(year:number) {
+        if(year == year) {
+            cookie.set("ft-lecture-year",year);
+        }
+    }
+
+    render() {
+        return <div className="ui modal" id="optionsModal">
+            <i className="close icon"></i>
+            <div className="header">Lecture Year Selector</div>
+            <div className="content">
+                <div className="description">
+                    <div className="ui header">Type in a year</div>
+                        <div className="ui search" id="addYearSearchBox">
+                            <input className="prompt" id="yearSearchBox" placeholder="Available Years..." type="text" />
+                            <div className="results"></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="actions">
+                    <div className="ui black deny button">Cancel</div>
+                <div onClick={this.setYear.bind(this)} className="ui positive right labeled icon button">
+                    Save
+                    <i className="checkmark icon"></i>
+                </div>
+            </div>
+        </div>
+    }
+}
+
 export class Lectures extends Page {
     initialise() {}
 
+    options() {
+        window["$"]("#optionsModal").modal("show")
+    }
+
     render(data) {
+        yearOverride = querystring.parse(data.querystring).year;
+
         $("title").text("Lecture Viewer 2.0");
 
         ReactDOM.render(
             <Semantify.Container>
+                <OptionsModal />
+                <div className="ui right floated button" onClick={this.options}>Options</div>
                 <h1>Lecture Viewer 2.0</h1>
                 <LecturesApp></LecturesApp>
             </Semantify.Container>,

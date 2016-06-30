@@ -1,5 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
+import * as request from "request";
 import * as $ from "jquery";
 window["$"] = $;
 window["jQuery"] = $;

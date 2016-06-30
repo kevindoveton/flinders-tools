@@ -26,7 +26,8 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-semantify": "^0.5.1",
-    "reactcss": "^1.0.3"
+    "reactcss": "^1.0.3",
+    "request": "^2.72.0"
   },
   "devDependencies": {
     "gulp-notify": "^2.2.0",

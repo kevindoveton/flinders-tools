@@ -7,6 +7,7 @@ export abstract class Page {
         this.page = page;
 
         page(path,(data) => {
+            $("#stage").html("");
             this.render(data);
         });
 

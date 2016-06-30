@@ -8,6 +8,14 @@ import * as cookie from "js-cookie";
 
 import * as lectures from "../../lib/lectures";
 
+import * as querystring from "querystring";
+
+let yearOverride;
+
+function getYear() {
+    return yearOverride || parseInt(cookie.get("ft-lecture-year"));
+}
+
 let Semantify = require("react-semantify");
 let plyr = require("plyr");
 
@@ -209,7 +217,7 @@ class LectureList extends React.Component<{topicCode:string},{activeURL:string,l
     }
 
     componentDidMount() {
-        lectures.get(this.props.topicCode,2016,(err,lectures) => {
+        lectures.get(this.props.topicCode,getYear(),(err,lectures) => {
             for(let i=0;i < lectures.length;i++) {
                 this.state.lectures[this.state.lectures.length] = {
                     unix: lectures[i].unix,
@@ -272,6 +280,8 @@ export class LectureSubject extends Page {
     }
 
     render(data) {
+        yearOverride = querystring.parse(data.querystring).year;
+
         $("title").text("Lecture Viewer 2.0");
 
         ReactDOM.render(
