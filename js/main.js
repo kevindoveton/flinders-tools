@@ -301,7 +301,7 @@ var LecturesApp = (function (_super) {
     LecturesApp.prototype.getSubscriptions = function () {
         var subs = cookie.getJSON("ft-subs");
         if (!subs) {
-            cookie.set("ft-subs", [], { expires: 365 });
+            cookie.set("ft-subs", [], { expires: 36500 });
             return cookie.getJSON("ft-subs");
         }
         return subs;
@@ -310,7 +310,7 @@ var LecturesApp = (function (_super) {
         for (var i = 0; i < this.state.subscriptions.length; i++) {
             if (this.state.subscriptions[i] == topicCode) {
                 this.state.subscriptions.splice(i, 1);
-                cookie.set("ft-subs", this.state.subscriptions, { expires: 365 });
+                cookie.set("ft-subs", this.state.subscriptions, { expires: 36500 });
                 this.setState(this.state);
                 return true;
             }
@@ -324,7 +324,7 @@ var LecturesApp = (function (_super) {
             }
         }
         this.state.subscriptions[this.state.subscriptions.length] = topicCode;
-        cookie.set("ft-subs", this.state.subscriptions, { expires: 365 });
+        cookie.set("ft-subs", this.state.subscriptions, { expires: 36500 });
         this.setState(this.state);
         return true;
     };
@@ -381,7 +381,7 @@ var OptionsModal = (function (_super) {
     };
     OptionsModal.prototype.setYearInternal = function (year) {
         if (year == year) {
-            cookie.set("ft-lecture-year", year);
+            cookie.set("ft-lecture-year", year, { expires: 36500 });
         }
     };
     OptionsModal.prototype.render = function () {
