@@ -1,9 +1,13 @@
 {
   "dependencies": {
+    "bluebird": "registry:npm/bluebird#3.4.1+20160811213708",
+    "react-addons-update": "registry:npm/react-addons-update#0.14.0+20160324044346",
     "request": "registry:npm/request#2.69.0+20160428223725"
   },
   "globalDependencies": {
     "react-redux": "registry:dt/react-redux#4.4.0+20160724070751",
-    "redux": "registry:dt/redux#3.5.2+20160703092728"
+    "redux": "registry:dt/redux#3.5.2+20160703092728",
+    "redux-logger": "registry:dt/redux-logger#2.6.0+20160619033847",
+    "redux-thunk": "registry:dt/redux-thunk#2.1.0+20160703120921"
   }
 }
