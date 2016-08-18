@@ -24,17 +24,25 @@
     "plyr": "^1.8.2",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "react-semantify": "^0.5.1",
     "reactcss": "^1.0.3",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0",
     "request": "^2.72.0"
   },
   "devDependencies": {
-    "gulp-notify": "^2.2.0",
-    "tsify": "^0.16.0",
-    "vinyl-source-stream": "^1.1.0",
-    "browserify": "^13.0.1",
+    "browserify": "latest",
     "gulp": "^3.9.1",
-    "watchify": "^3.7.0"
+    "gulp-notify": "latest",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "latest",
+    "gulp-util": "latest",
+    "merge2": "^1.0.2",
+    "tsify": "latest",
+    "vinyl-source-stream": "latest",
+    "watchify": "latest"
   }
 }
