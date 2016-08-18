@@ -10,6 +10,8 @@ import {getSimple,ILectureList} from "./lib/lectures";
 import * as Promise from "bluebird";
 
 export enum EAppEvent {
+    REQUEST_SUBJECT,
+    RECEIVE_SUBJECT,
     REQUEST_SUBSCRIPTIONS,
     RECEIVE_SUBSCRIPTIONS,
     UPDATED_SUBSCRIPTIONS,
@@ -23,10 +25,31 @@ export interface IAppEvent {
     type: EAppEvent;
 }
 
+export function requestSubject(subjectcode:string):any {
+    return (dispatch) => {
+        dispatch({
+            type: EAppEvent.REQUEST_SUBJECT,
+            subjectcode
+        });
+
+        return getSimple(subjectcode)
+            .then(lecturelist => dispatch(receiveSubject(subjectcode,lecturelist)));
+    };
+}
+
+export function receiveSubject(subjectcode:string,lecturelist:ILectureList):any {
+    return {
+        type: EAppEvent.RECEIVE_SUBJECT,
+        lecturelist,
+        subjectcode
+    }
+}
+
 export function requestSubscriptions():any {
     return (dispatch) => {
         dispatch({
             type: EAppEvent.REQUEST_SUBSCRIPTIONS,
+            subjects: getSubscriptions()
         });
 
         let promises:Promise<ILectureList>[] = [];

@@ -24,7 +24,7 @@ export interface ILectureList {
 
 let endpoint = "http://video.flinders.edu.au/lectureResources/vod/";
 
-export function get(classID:string,year:(string|number),callback:(err,lectures:ILectureList) => void) {
+export function get(classID:string,year:(string|number),callback:(err,lectures?:ILectureList) => void) {
     request.get(endpoint + classID.toUpperCase() + "_" + year + ".xml",(body,status) => {
         if(status == 200) {
             let $ = cheerio.load(body);
@@ -60,7 +60,7 @@ export function get(classID:string,year:(string|number),callback:(err,lectures:I
             });
         }
         else {
-            callback("HTTP status code is " + status + " (not 200!)",[]);
+            callback("HTTP status code is " + status + " (not 200!)");
         }
     });
 }
@@ -82,7 +82,7 @@ export function getSimple(classID:string) {
     });
 }
 
-interface ITopic {
+export interface ITopic {
     id: number;
     name: string;
     code: string;
