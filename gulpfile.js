@@ -47,14 +47,15 @@ function register(i,app) {
             .on("time",function(time) {
                 // gutil.log("Finished rebuilding after " + time/1000 + " s")
             });
-        
+
         gulp.task(id,function() {
             // gutil.log("Running sub-task " + id);
 
             function build(rebuild) {
-                var bundle = bundler.bundle().on("error",function(err) {
-                    gutil.log(err.toString())
-                });
+                var bundle = bundler.bundle();
+                //.on("error",function(err) {
+                //    gutil.log(err.toString())
+                //});
 
                 return bundle
                 .pipe(source(app.result))

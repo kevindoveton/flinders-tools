@@ -1,29 +1,46 @@
-/// <reference path="../../typings/tsd.d.ts" />
+/// <reference path="../../typings/index.d.ts" />
 
-import * as request from "request";
 import * as $ from "jquery";
 window["$"] = $;
 window["jQuery"] = $;
 
-require("../../semantic/semantic.min.js")
+require("../../semantic/semantic.min.js");
 
-let page = require("page");
+import Main from "./components/main";
+import {SubscriptionList} from "./components/app.subscriptionsoverview.tsx";
+import {TopicOverview} from "./components/app.topicoverview.tsx";
+import {LectureVideo} from "./components/app.video.tsx";
+import app from "./reducers";
+import {requestSubscriptions} from "./actions";
 
-// let plyr = require("plyr");
-// plyr.setup();
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
-import {Index} from "./routes/index";
-import {Lectures} from "./routes/lectures";
-import {LectureSubject} from "./routes/lectures/subject";
+import {createStore,applyMiddleware} from "redux";
+import thunkMiddleware from "redux-thunk";
+import * as createLogger from "redux-logger";
+import {Router,Route} from "react-router";
 
-let index = new Index("/",page);
-let lectures = new Lectures("/lectures",page);
-let lectureSubject = new LectureSubject("/lectures/:topicCode",page);
+import {Provider} from "react-redux";
 
-page.base("/flinders-tools");
+let store = createStore(app,
+    applyMiddleware(
+        thunkMiddleware,
+        createLogger()
+    )
+);
 
-$(document).ready(() => {
-    page({
-        hashbang: true
-    });
-})
+ReactDOM.render(
+    <Provider store={store}>
+        <Router>
+            <Route component={Main}>
+                <Route path="/" component={SubscriptionList} />
+                <Route path="/vid/:url" component={LectureVideo} />
+                <Route path="/topic/:topicCode" component={TopicOverview} />
+            </Route>
+        </Router>
+    </Provider>,
+    document.getElementById("stage")
+);
+
+store.dispatch(requestSubscriptions());

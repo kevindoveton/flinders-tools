@@ -17,21 +17,25 @@
   },
   "homepage": "https://github.com/SwadicalRag/flinders-tools#readme",
   "dependencies": {
+    "bluebird": "^3.4.1",
     "cheerio": "^0.20.0",
     "jquery": "^3.0.0",
+    "js-base64": "^2.1.9",
     "js-cookie": "^2.1.2",
+    "lz-string": "^1.4.4",
     "moment-timezone": "^0.5.4",
-    "plyr": "^1.8.2",
     "react": "^15.1.0",
+    "react-addons-update": "^15.3.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
-    "react-semantify": "^0.5.1",
+    "react-semantify": "^0.5.2",
     "reactcss": "^1.0.3",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0",
-    "request": "^2.72.0"
+    "request": "^2.72.0",
+    "video.js": "^5.10.8"
   },
   "devDependencies": {
     "browserify": "latest",

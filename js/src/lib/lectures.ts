@@ -3,18 +3,30 @@ import * as request from "./request";
 
 import * as moment from "moment-timezone";
 
-let topicDatabase = require("../topics");
+import * as Promise from "bluebird";
 
-interface ILecture {
+import {getYear,isWatched as _isWatched} from "./cookie-persist";
+
+let topicDatabase = require("./topics");
+
+export interface ILecture {
     url: string;
     title: string;
     date: string;
     unix: number;
+    isWatched: () => boolean;
+    watched: boolean;
+    subjectcode: string;
+}
+
+export interface ILectureList {
+    lectures: ILecture[];
+    subjectcode: string;
 }
 
 let endpoint = "http://video.flinders.edu.au/lectureResources/vod/";
 
-export function get(classID:string,year:(string|number),callback:(err,lectures:ILecture[]) => void) {
+export function get(classID:string,year:(string|number),callback:(err,lectures?:ILectureList) => void) {
     request.get(endpoint + classID.toUpperCase() + "_" + year + ".xml",(body,status) => {
         if(status == 200) {
             let $ = cheerio.load(body);
@@ -24,12 +36,21 @@ export function get(classID:string,year:(string|number),callback:(err,lectures:I
             $("channel").find("item").each((i,el) => {
                 let pubDate = moment($(el).find("pubDate").text(),"ddd, DD MMM YYYY HH:mm:ss ZZ");
 
-                lectures[lectures.length] = {
+                let lecture:ILecture = {
                     url: $(el).find("guid").text(),
                     title: $(el).find("title").text(),
                     date: moment.duration(moment().diff(pubDate)).humanize(),
-                    unix: pubDate.unix()
+                    unix: pubDate.unix(),
+                    isWatched() {
+                        return _isWatched(this.url);
+                    },
+                    watched: _isWatched($(el).find("guid").text()),
+                    subjectcode: classID
                 };
+
+                lecture.isWatched = lecture.isWatched.bind(lecture);
+
+                lectures[lectures.length] = lecture;
             });
 
             lectures.sort((a,b) => {
@@ -37,15 +58,35 @@ export function get(classID:string,year:(string|number),callback:(err,lectures:I
 
             });
 
-            callback(null,lectures);
+            callback(null,{
+                lectures,
+                subjectcode: classID
+            });
         }
         else {
-            callback("HTTP status code is " + status + " (not 200!)",[]);
+            callback("HTTP status code is " + status + " (not 200!)");
         }
     });
 }
 
-interface ITopic {
+export function getWithUserDefinedYear(classID:string,callback:(err,lectures:ILectureList) => void) {
+    return get(classID,getYear(),callback);
+}
+
+export function getSimple(classID:string) {
+    return new Promise<ILectureList>((resolve,reject) => {
+        getWithUserDefinedYear(classID,(err,lectures:ILectureList) => {
+            if(err) {
+                reject(err);
+            }
+            else {
+                resolve(lectures);
+            }
+        });
+    });
+}
+
+export interface ITopic {
     id: number;
     name: string;
     code: string;
