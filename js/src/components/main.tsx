@@ -12,6 +12,7 @@ export default class Main extends React.Component<{},{}> {
             <div className="ui container" style={style}>
                 <h1>Magical Lecture Viewer 🎊</h1>
                 {this.props.children}
+                <h5 className="footer">coded with ❤ by <a href="https://github.com/swadicalrag/">swadical</a></h5>
             </div>
         </div>
     }

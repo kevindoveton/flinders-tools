@@ -231,7 +231,7 @@ var Main = (function (_super) {
         var style = {
             "padding-top": "20px"
         };
-        return React.createElement("div", null, React.createElement("div", {className: "ui container", style: style}, React.createElement("h1", null, "Magical Lecture Viewer 🎊"), this.props.children));
+        return React.createElement("div", null, React.createElement("div", {className: "ui container", style: style}, React.createElement("h1", null, "Magical Lecture Viewer 🎊"), this.props.children, React.createElement("h5", {className: "footer"}, "coded with ❤ by ", React.createElement("a", {href: "https://github.com/swadicalrag/"}, "swadical"))));
     };
     return Main;
 }(React.Component));
