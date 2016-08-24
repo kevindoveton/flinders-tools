@@ -102,3 +102,7 @@ export function addWatched(url:string) {
 
     return true;
 }
+
+if(!getYear() || (getYear() != getYear())) {
+    setYear(2016);
+}

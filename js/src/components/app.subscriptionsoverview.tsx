@@ -13,8 +13,6 @@ export class SubscriptionList extends React.Component<{},{}> {
     }
 
     render() {
-        $("title").text("Lecture Viewer 3.0");
-
         return <div>
             <OptionsModal />
             <div className="ui right floated button" onClick={this.options}>Options</div>

@@ -8,6 +8,8 @@ export default class Main extends React.Component<{},{}> {
             "padding-top": "20px"
         };
 
+        $("title").text("Lecture Viewer 3.0");
+
         return <div>
             <div className="ui container" style={style}>
                 <h1>Magical Lecture Viewer 🎊</h1>
