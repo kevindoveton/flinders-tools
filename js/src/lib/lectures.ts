@@ -5,16 +5,18 @@ import * as moment from "moment-timezone";
 
 import * as Promise from "bluebird";
 
-import {getYear,isWatched} from "./cookie-persist";
+import {getYear,isWatched as _isWatched} from "./cookie-persist";
 
-let topicDatabase = require("../topics");
+let topicDatabase = require("./topics");
 
 export interface ILecture {
     url: string;
     title: string;
     date: string;
     unix: number;
-    watched: () => boolean;
+    isWatched: () => boolean;
+    watched: boolean;
+    subjectcode: string;
 }
 
 export interface ILectureList {
@@ -34,17 +36,19 @@ export function get(classID:string,year:(string|number),callback:(err,lectures?:
             $("channel").find("item").each((i,el) => {
                 let pubDate = moment($(el).find("pubDate").text(),"ddd, DD MMM YYYY HH:mm:ss ZZ");
 
-                let lecture = {
+                let lecture:ILecture = {
                     url: $(el).find("guid").text(),
                     title: $(el).find("title").text(),
                     date: moment.duration(moment().diff(pubDate)).humanize(),
                     unix: pubDate.unix(),
-                    watched() {
-                        return isWatched(this.url);
-                    }
+                    isWatched() {
+                        return _isWatched(this.url);
+                    },
+                    watched: _isWatched($(el).find("guid").text()),
+                    subjectcode: classID
                 };
 
-                lecture.watched = lecture.watched.bind(lecture);
+                lecture.isWatched = lecture.isWatched.bind(lecture);
 
                 lectures[lectures.length] = lecture;
             });

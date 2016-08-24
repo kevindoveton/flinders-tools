@@ -63,13 +63,15 @@ namespace helpers {
         return state;
     }
 
-    function forEachVideo(lecturelist:ILectureList,callback:(lecture:ILecture) => void) {
+    function forEachVideo(lecturelist:ILectureList,callback:(lecture:ILecture,lectureIdx:number) => void) {
+        let lectureIdx = 0;
         for(let lecture of lecturelist.lectures) {
-            callback(lecture);
+            callback(lecture,lectureIdx);
+            lectureIdx++;
         }
     }
 
-    function forEachVideoEx(lecturelist:ILectureList[],callback:(lecture:ILecture) => void) {
+    function forEachVideoEx(lecturelist:ILectureList[],callback:(lecture:ILecture,lectureIdx:number) => void) {
         for(let lectures of lecturelist) {
             forEachVideo(lectures,callback);
         }
@@ -85,7 +87,7 @@ namespace helpers {
                 }
             });
         });
-        
+
         let i = 0;
         for(let data of state.lecturedata) {
             if(data.subjectcode == lecturedata.subjectcode) {
@@ -117,6 +119,33 @@ namespace helpers {
 
         return state;
     }
+
+    export function watchLecture(state:IAppState,url:string,watched:boolean) {
+        let i = 0;
+        for(let lecturedata of state.lecturedata) {
+            forEachVideo(lecturedata,(lecture,lectureIdx) => {
+                if(lecture.url != url) {return;}
+                state = <any>update(state,{
+                    lecturedata: {
+                        [i]: {
+                            lectures: {
+                                [lectureIdx]: {
+                                    watched: {$set: watched}
+                                }
+                            }
+                        }
+                    },
+                    videos: {
+                        [lecture.url]: {
+                            watched: {$set: watched}
+                        }
+                    }
+                });
+            });
+            i++;
+        }
+        return state;
+    }
 }
 
 export default function app(state:IAppState = initialState,action) {
@@ -124,16 +153,20 @@ export default function app(state:IAppState = initialState,action) {
         case EAppEvent.REQUEST_SUBJECT: {
             let newdata = helpers.fillLectureData(state,action.subjectcode);
 
-            newdata.isLoading = true;
-
-            return newdata;
+            return update(newdata,{
+                isLoading: {
+                    $set: true
+                }
+            });
         };
         case EAppEvent.RECEIVE_SUBJECT: {
             let newdata = helpers.updateLectureData(state,action.lecturelist);
 
-            newdata.isLoading = false;
-
-            return newdata;
+            return update(newdata,{
+                isLoading: {
+                    $set: false
+                }
+            });
         };
         case EAppEvent.REQUEST_SUBSCRIPTIONS: {
             return update(helpers.fillBulkLectureData(state,action.subjects),{
@@ -144,9 +177,17 @@ export default function app(state:IAppState = initialState,action) {
         case EAppEvent.RECEIVE_SUBSCRIPTIONS: {
             let newdata = helpers.updateBulkLectureData(state,action.subscriptions);
 
-            newdata.isLoading = false;
-
-            return newdata;
+            return update(newdata,{
+                isLoading: {
+                    $set: false
+                }
+            });
+        };
+        case EAppEvent.WATCH_LECTURE: {
+            return helpers.watchLecture(state,action.url,true);
+        };
+        case EAppEvent.UNWATCH_LECTURE: {
+            return helpers.watchLecture(state,action.url,false);
         };
         default: {
             return state;

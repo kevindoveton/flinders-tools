@@ -14,7 +14,7 @@ export enum EAppEvent {
     RECEIVE_SUBJECT,
     REQUEST_SUBSCRIPTIONS,
     RECEIVE_SUBSCRIPTIONS,
-    UPDATED_SUBSCRIPTIONS,
+    UPDATE_SUBSCRIPTIONS,
     ADD_SUBSCRIPTION,
     REMOVE_SUBSCRIPTION,
     WATCH_LECTURE,
@@ -70,16 +70,6 @@ export function receiveSubscriptions(lecturelist:ILectureList[]):any {
     }
 }
 
-export function updatedSubscriptions():any {
-    return (dispatch) => {
-        dispatch({
-            type: EAppEvent.UPDATED_SUBSCRIPTIONS,
-        });
-
-        dispatch(requestSubscriptions());
-    };
-}
-
 export function addSubscription(topiccode:string):any {
     return (dispatch) => {
         dispatch({
@@ -88,7 +78,7 @@ export function addSubscription(topiccode:string):any {
         });
 
         if(addSubscriptionInternal(topiccode)) {
-            dispatch(updatedSubscriptions());
+            dispatch(requestSubscriptions());
         }
     };
 }
@@ -101,29 +91,29 @@ export function removeSubscription(topiccode:string):any {
         });
 
         if(removeSubscriptionInternal(topiccode)) {
-            dispatch(updatedSubscriptions());
+            dispatch(requestSubscriptions());
         }
     };
 }
 
 export function watchLecture(url:string):any {
     return (dispatch) => {
+        watchLectureInternal(url);
+
         dispatch({
             type: EAppEvent.WATCH_LECTURE,
             url
         });
-
-        watchLectureInternal(url);
     };
 }
 
 export function unwatchLecture(url:string):any {
     return (dispatch) => {
+        unwatchLectureInternal(url);
+
         dispatch({
             type: EAppEvent.UNWATCH_LECTURE,
             url
         });
-
-        unwatchLectureInternal(url);
     };
 }

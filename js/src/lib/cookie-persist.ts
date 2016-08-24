@@ -6,6 +6,10 @@ export function getYear() {
     return yearOverride || parseInt(cookie.get("ft-lecture-year"));
 }
 
+export function setYear(year:number) {
+    cookie.set("ft-lecture-year",year);
+}
+
 export function getSubscriptions() {
     let subs:string[] = cookie.getJSON("ft-subs");
 
@@ -41,6 +45,7 @@ export function addSubscription(topicCode:string) {
         }
     }
 
+    subscriptions[subscriptions.length] = topicCode;
     cookie.set("ft-subs",subscriptions,{expires: 36500});
 
     return true;

@@ -1,3 +1,5 @@
+/// <reference path="globals/js-base64/index.d.ts" />
+/// <reference path="globals/lz-string/index.d.ts" />
 /// <reference path="globals/react-redux/index.d.ts" />
 /// <reference path="globals/redux-logger/index.d.ts" />
 /// <reference path="globals/redux-thunk/index.d.ts" />

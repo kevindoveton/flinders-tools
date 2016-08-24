@@ -7,8 +7,8 @@ let w:any = window;
 w.internal_cors_callback_index = 0;
 export function get(url,callback:(contents:string,code:number) => void) {
     w.internal_cors_callback_index++;
-    
-    let cb = w.internal_cors_callback_index;
+
+    let cb = "cb_" + w.internal_cors_callback_index;
 
     let callback2:any = (data) => {
         callback(data.contents,data.status.http_code);

@@ -4,10 +4,12 @@ import * as $ from "jquery";
 window["$"] = $;
 window["jQuery"] = $;
 
-require("../../../semantic/semantic.min.js");
+require("../../semantic/semantic.min.js");
 
 import Main from "./components/main";
-import SubscriptionList from "./containers/subscription-list";
+import {SubscriptionList} from "./components/app.subscriptionsoverview.tsx";
+import {TopicOverview} from "./components/app.topicoverview.tsx";
+import {LectureVideo} from "./components/app.video.tsx";
 import app from "./reducers";
 import {requestSubscriptions} from "./actions";
 
@@ -33,6 +35,8 @@ ReactDOM.render(
         <Router>
             <Route component={Main}>
                 <Route path="/" component={SubscriptionList} />
+                <Route path="/vid/:url" component={LectureVideo} />
+                <Route path="/topic/:topicCode" component={TopicOverview} />
             </Route>
         </Router>
     </Provider>,

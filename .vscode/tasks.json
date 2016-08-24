@@ -8,7 +8,7 @@
     ],
     "tasks": [
 		{
-			"taskName": "compile-js",
+			"taskName": "watch",
 			"isBuildCommand": true,
 			"showOutput": "always"
 		}
