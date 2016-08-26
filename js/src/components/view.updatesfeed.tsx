@@ -107,7 +107,7 @@ export class InternalLectureSubscriptionUpdates extends React.Component<{
                 <div className="ui content event">
                     <div className="summary">
                         <Link to={redirect} className="user">{event.subjectCode}</Link> added a new
-                        <Link to={target} className="user">&nbsp;video</Link>
+                        <Link to={target} onClick={() => this.props.watchLecture(event.url)} className="user">&nbsp;video</Link>
                         <div className="date">{event.date} ago</div>&nbsp;&nbsp;
                         <i style={btnStyle} className="checkmark icon" onClick={() => this.props.watchLecture(event.url)}></i>
                     </div>
