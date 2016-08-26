@@ -254,7 +254,17 @@ var LectureAdditionModal = (function (_super) {
     }
     LectureAdditionModal.prototype.componentDidMount = function () {
         window["$"]("#addLectureModal").modal();
-        var list = require("../lib/topics").topicDatabase;
+        var sourcelist = require("../lib/topics").topicDatabase;
+        var lookup = {};
+        var list = [];
+        for (var _i = 0, sourcelist_1 = sourcelist; _i < sourcelist_1.length; _i++) {
+            var entry = sourcelist_1[_i];
+            if (lookup[entry.code]) {
+                continue;
+            }
+            list[list.length] = entry;
+            lookup[entry.code] = true;
+        }
         window["$"]("#addLectureSearchBox").search({
             source: list,
             searchFields: [

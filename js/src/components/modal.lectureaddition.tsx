@@ -8,7 +8,17 @@ export class LectureAdditionModal extends React.Component<{
 },{}> {
     componentDidMount() {
         window["$"]("#addLectureModal").modal();
-        let list = require("../lib/topics").topicDatabase;
+        let sourcelist = require("../lib/topics").topicDatabase;
+
+        let lookup = {};
+        let list = [];
+        for(let entry of sourcelist) {
+            if(lookup[entry.code]) {
+                continue;
+            }
+            list[list.length] = entry;
+            lookup[entry.code] = true;
+        }
 
         window["$"]("#addLectureSearchBox").search({
             source: list,
