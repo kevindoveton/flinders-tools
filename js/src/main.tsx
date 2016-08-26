@@ -6,7 +6,7 @@ window["jQuery"] = $;
 
 require("../../semantic/semantic.min.js");
 
-import Main from "./components/main";
+import {Main} from "./components/main";
 import {SubscriptionList} from "./components/app.subscriptionsoverview.tsx";
 import {TopicOverview} from "./components/app.topicoverview.tsx";
 import {LectureVideo} from "./components/app.video.tsx";

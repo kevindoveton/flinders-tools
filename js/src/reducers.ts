@@ -1,5 +1,6 @@
 /// <reference path="../../typings/index.d.ts" />
 
+import {getYear} from "./lib/cookie-persist";
 import {ILectureList,ILecture} from './lib/lectures'
 import {EAppEvent} from './actions'
 import * as update from "react-addons-update";
@@ -11,6 +12,8 @@ export interface IAppState {
     videos: {[url:string]: ILecture};
 
     isLoading: boolean;
+
+    year:number;
 }
 
 const initialState:IAppState = {
@@ -20,6 +23,8 @@ const initialState:IAppState = {
     videos: {},
 
     isLoading: false,
+
+    year: getYear(),
 }
 
 namespace helpers {
@@ -191,6 +196,11 @@ export default function app(state:IAppState = initialState,action) {
         };
         default: {
             return state;
+        };
+        case EAppEvent.SET_YEAR: {
+            return update(state,{
+                year: {$set: action.year}
+            });
         };
     }
 }

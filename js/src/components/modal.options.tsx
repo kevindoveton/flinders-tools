@@ -1,10 +1,9 @@
 /// <reference path="../../../typings/index.d.ts" />
 
 import * as React from "react";
-import {setYear} from "../lib/cookie-persist";
 
 class InternalOptionsModal extends React.Component<{
-    update: () => void
+    setYear: (year) => void
 },{}> {
     componentDidMount() {
         window["$"]("#optionsModal").modal();
@@ -45,8 +44,7 @@ class InternalOptionsModal extends React.Component<{
         let year = parseInt($("#yearSearchBox").val());
         $("#yearSearchBox").val("");
 
-        setYear(year);
-        this.props.update();
+        this.props.setYear(year);
     }
 
     render() {
@@ -73,7 +71,7 @@ class InternalOptionsModal extends React.Component<{
     }
 }
 
-import {requestSubscriptions} from "../actions";
+import {setYear} from "../actions";
 
 import {connect} from "react-redux";
 
@@ -87,9 +85,9 @@ function mapStateToProps(state:IAppState) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        update: () => {
-            dispatch(requestSubscriptions())
-        },
+        setYear: (year) => {
+            dispatch(setYear(year));
+        }
     }
 }
 

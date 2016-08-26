@@ -13,6 +13,7 @@ var Promise = require("bluebird");
     EAppEvent[EAppEvent["REMOVE_SUBSCRIPTION"] = 6] = "REMOVE_SUBSCRIPTION";
     EAppEvent[EAppEvent["WATCH_LECTURE"] = 7] = "WATCH_LECTURE";
     EAppEvent[EAppEvent["UNWATCH_LECTURE"] = 8] = "UNWATCH_LECTURE";
+    EAppEvent[EAppEvent["SET_YEAR"] = 9] = "SET_YEAR";
 })(exports.EAppEvent || (exports.EAppEvent = {}));
 var EAppEvent = exports.EAppEvent;
 function requestSubject(subjectcode) {
@@ -101,6 +102,17 @@ function unwatchLecture(url) {
     };
 }
 exports.unwatchLecture = unwatchLecture;
+function setYear(year) {
+    return function (dispatch) {
+        cookie_persist_1.setYear(year);
+        dispatch({
+            type: EAppEvent.SET_YEAR,
+            year: year
+        });
+        dispatch(requestSubscriptions());
+    };
+}
+exports.setYear = setYear;
 
 },{"./lib/cookie-persist":14,"./lib/lectures":15,"bluebird":21}],2:[function(require,module,exports){
 /// <reference path="../../../typings/index.d.ts" />
@@ -221,24 +233,39 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = require("react");
-var Main = (function (_super) {
-    __extends(Main, _super);
-    function Main() {
+var MainInternal = (function (_super) {
+    __extends(MainInternal, _super);
+    function MainInternal() {
         _super.apply(this, arguments);
     }
-    Main.prototype.render = function () {
+    MainInternal.prototype.componentDidMount = function () {
+        window["$"]("#main-title").popup();
+    };
+    MainInternal.prototype.componentDidUpdate = function () {
+        window["$"]("#main-title").popup();
+    };
+    MainInternal.prototype.render = function () {
         var style = {
             "padding-top": "20px"
         };
         $("title").text("Lecture Viewer 3.0");
-        return React.createElement("div", null, React.createElement("div", {className: "ui container", style: style}, React.createElement("h1", null, "Magical Lecture Viewer 🎊"), this.props.children, React.createElement("h5", {className: "footer"}, "coded with ❤ by ", React.createElement("a", {href: "https://github.com/swadicalrag/"}, "swadical"))));
+        return React.createElement("div", null, React.createElement("div", {className: "ui container", style: style}, React.createElement("h1", {id: "main-title", "data-content": "currently browsing  " + this.props.year + " lectures"}, "Magical Lecture Viewer 🎊"), this.props.children, React.createElement("h5", {className: "footer"}, "coded with ❤ by ", React.createElement("a", {href: "https://github.com/swadicalrag/"}, "swadical"))));
     };
-    return Main;
+    return MainInternal;
 }(React.Component));
-exports.__esModule = true;
-exports["default"] = Main;
+exports.MainInternal = MainInternal;
+var react_redux_1 = require("react-redux");
+function mapStateToProps(state) {
+    return {
+        year: state.year
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+exports.Main = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(MainInternal);
 
-},{"react":404}],6:[function(require,module,exports){
+},{"react":404,"react-redux":157}],6:[function(require,module,exports){
 /// <reference path="../../../typings/index.d.ts" />
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
@@ -299,7 +326,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var React = require("react");
-var cookie_persist_1 = require("../lib/cookie-persist");
 var InternalOptionsModal = (function (_super) {
     __extends(InternalOptionsModal, _super);
     function InternalOptionsModal() {
@@ -341,8 +367,7 @@ var InternalOptionsModal = (function (_super) {
     InternalOptionsModal.prototype.setYear = function () {
         var year = parseInt($("#yearSearchBox").val());
         $("#yearSearchBox").val("");
-        cookie_persist_1.setYear(year);
-        this.props.update();
+        this.props.setYear(year);
     };
     InternalOptionsModal.prototype.render = function () {
         return React.createElement("div", {className: "ui modal", id: "optionsModal"}, React.createElement("i", {className: "close icon"}), React.createElement("div", {className: "header"}, "Lecture Year Selector"), React.createElement("div", {className: "content"}, React.createElement("div", {className: "description"}, React.createElement("div", {className: "ui header"}, "Type in a year"), React.createElement("div", {className: "ui search", id: "addYearSearchBox"}, React.createElement("input", {className: "prompt", id: "yearSearchBox", placeholder: "Available Years...", type: "text"}), React.createElement("div", {className: "results"})))), React.createElement("div", {className: "actions"}, React.createElement("div", {className: "ui black deny button"}, "Cancel"), React.createElement("div", {onClick: this.setYear.bind(this), className: "ui positive right labeled icon button"}, "Save", React.createElement("i", {className: "checkmark icon"}))));
@@ -356,14 +381,14 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        update: function () {
-            dispatch(actions_1.requestSubscriptions());
+        setYear: function (year) {
+            dispatch(actions_1.setYear(year));
         }
     };
 }
 exports.OptionsModal = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(InternalOptionsModal);
 
-},{"../actions":1,"../lib/cookie-persist":14,"../lib/topics":17,"react":404,"react-redux":157}],8:[function(require,module,exports){
+},{"../actions":1,"../lib/topics":17,"react":404,"react-redux":157}],8:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -919,19 +944,21 @@ var createLogger = require("redux-logger");
 var react_router_1 = require("react-router");
 var react_redux_1 = require("react-redux");
 var store = redux_1.createStore(reducers_1["default"], redux_1.applyMiddleware(redux_thunk_1["default"], createLogger()));
-ReactDOM.render(React.createElement(react_redux_1.Provider, {store: store}, React.createElement(react_router_1.Router, null, React.createElement(react_router_1.Route, {component: main_1["default"]}, React.createElement(react_router_1.Route, {path: "/", component: app_subscriptionsoverview_tsx_1.SubscriptionList}), React.createElement(react_router_1.Route, {path: "/vid/:url", component: app_video_tsx_1.LectureVideo}), React.createElement(react_router_1.Route, {path: "/topic/:topicCode", component: app_topicoverview_tsx_1.TopicOverview})))), document.getElementById("stage"));
+ReactDOM.render(React.createElement(react_redux_1.Provider, {store: store}, React.createElement(react_router_1.Router, null, React.createElement(react_router_1.Route, {component: main_1.Main}, React.createElement(react_router_1.Route, {path: "/", component: app_subscriptionsoverview_tsx_1.SubscriptionList}), React.createElement(react_router_1.Route, {path: "/vid/:url", component: app_video_tsx_1.LectureVideo}), React.createElement(react_router_1.Route, {path: "/topic/:topicCode", component: app_topicoverview_tsx_1.TopicOverview})))), document.getElementById("stage"));
 store.dispatch(actions_1.requestSubscriptions());
 
 },{"../../semantic/semantic.min.js":435,"./actions":1,"./components/app.subscriptionsoverview.tsx":2,"./components/app.topicoverview.tsx":3,"./components/app.video.tsx":4,"./components/main":5,"./reducers":19,"jquery":133,"react":404,"react-dom":154,"react-redux":157,"react-router":191,"redux":412,"redux-logger":405,"redux-thunk":406}],19:[function(require,module,exports){
 /// <reference path="../../typings/index.d.ts" />
 "use strict";
+var cookie_persist_1 = require("./lib/cookie-persist");
 var actions_1 = require('./actions');
 var update = require("react-addons-update");
 var initialState = {
     subscriptions: [],
     lecturedata: [],
     videos: {},
-    isLoading: false
+    isLoading: false,
+    year: cookie_persist_1.getYear()
 };
 var helpers;
 (function (helpers) {
@@ -1123,12 +1150,19 @@ function app(state, action) {
                 return state;
             }
             ;
+        case actions_1.EAppEvent.SET_YEAR:
+            {
+                return update(state, {
+                    year: { $set: action.year }
+                });
+            }
+            ;
     }
 }
 exports.__esModule = true;
 exports["default"] = app;
 
-},{"./actions":1,"react-addons-update":153}],20:[function(require,module,exports){
+},{"./actions":1,"./lib/cookie-persist":14,"react-addons-update":153}],20:[function(require,module,exports){
 'use strict'
 
 exports.toByteArray = toByteArray

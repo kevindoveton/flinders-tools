@@ -3,7 +3,8 @@ import {
     addSubscription as addSubscriptionInternal,
     removeSubscription as removeSubscriptionInternal,
     addWatched as watchLectureInternal,
-    removeWatched as unwatchLectureInternal
+    removeWatched as unwatchLectureInternal,
+    setYear as setYearInternal,
 } from "./lib/cookie-persist";
 
 import {getSimple,ILectureList} from "./lib/lectures";
@@ -19,6 +20,7 @@ export enum EAppEvent {
     REMOVE_SUBSCRIPTION,
     WATCH_LECTURE,
     UNWATCH_LECTURE,
+    SET_YEAR,
 }
 
 export interface IAppEvent {
@@ -115,5 +117,18 @@ export function unwatchLecture(url:string):any {
             type: EAppEvent.UNWATCH_LECTURE,
             url
         });
+    };
+}
+
+export function setYear(year):any {
+    return (dispatch) => {
+        setYearInternal(year);
+
+        dispatch({
+            type: EAppEvent.SET_YEAR,
+            year
+        });
+
+        dispatch(requestSubscriptions());
     };
 }
