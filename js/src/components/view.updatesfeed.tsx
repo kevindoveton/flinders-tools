@@ -3,6 +3,7 @@
 import * as React from "react";
 import {Link} from "react-router";
 
+import * as b64 from "js-base64";
 import {ILectureList} from "../lib/lectures";
 
 export interface ILectureEvent {
@@ -11,12 +12,14 @@ export interface ILectureEvent {
     title: string;
     date: string;
     url: string;
+    watched: boolean;
 }
 
 export class InternalLectureSubscriptionUpdates extends React.Component<{
     subscriptions:string[],
     lecturedata: ILectureList[];
-    loading: boolean
+    loading: boolean;
+    watchLecture: (url) => void;
 },{
     events: ILectureEvent[]
 }> {
@@ -51,7 +54,8 @@ export class InternalLectureSubscriptionUpdates extends React.Component<{
                     title: lectures[i].title,
                     url: lectures[i].url,
                     date: lectures[i].date,
-                    subjectCode: subjectCode
+                    subjectCode: subjectCode,
+                    watched: lectures[i].watched
                 }
             }
 
@@ -61,21 +65,23 @@ export class InternalLectureSubscriptionUpdates extends React.Component<{
         }
     }
 
-    lastEvents:number = 0;
-    componentDidUpdate() {
-        this.computeEvents();
+    // lastEvents:number = 0;
+    // componentDidUpdate() {
+    //     this.computeEvents();
 
-        if(this.lastEvents != this.state.events.length) {
-            this.lastEvents = this.state.events.length;
-            this.setState(this.state);
-        }
-    }
+    //     if(this.lastEvents != this.state.events.length) {
+    //         this.lastEvents = this.state.events.length;
+    //         this.setState(this.state);
+    //     }
+    // }
 
-    componentDidMount() {
-        this.componentDidUpdate();
-    }
+    // componentDidMount() {
+    //     this.componentDidUpdate();
+    // }
 
     render() {
+        this.computeEvents();
+
         if(this.props.loading) {
             return <div className="ui segment">
                 <p></p>
@@ -85,15 +91,24 @@ export class InternalLectureSubscriptionUpdates extends React.Component<{
             </div>;
         }
 
+        let n = 0;
         let subs = this.state.events.map((event,i) => {
-            if(i > 20) {return;}
+            if(event.watched) {return;}
+            if(n > 20) {return;}
+            n++;
+
             let redirect = "/topic/" + event.subjectCode;
+            let target = "/vid/" + b64.Base64.encodeURI(event.url);
+            let btnStyle = {
+                cursor: "pointer"
+            };
 
             return <div className="event">
                 <div className="ui content event">
                     <div className="summary">
                         <Link to={redirect} className="user">{event.subjectCode}</Link> added a new
-                        <Link to={redirect} className="user">&nbsp;video</Link>
+                        <Link to={target} className="user">&nbsp;video</Link>&nbsp;
+                        <i style={btnStyle} className="checkmark icon" onClick={() => this.props.watchLecture(event.url)}></i>
                         <div className="date">{event.date} ago</div>
                     </div>
                 </div>
@@ -101,7 +116,7 @@ export class InternalLectureSubscriptionUpdates extends React.Component<{
         });
 
         if(this.state.events.length == 0) {
-            subs = [<div>Nothing new happened, check back later.</div>];
+            subs = [<div>You're up to date, well done!</div>];
         }
 
         return <div className="ui relaxed feed">{subs}</div>;
@@ -109,6 +124,8 @@ export class InternalLectureSubscriptionUpdates extends React.Component<{
 }
 
 import {connect} from "react-redux";
+
+import {watchLecture} from "../actions";
 
 function mapStateToProps(state) {
     return {
@@ -120,7 +137,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-
+        watchLecture: (url) => {
+            dispatch(watchLecture(url))
+        }
     }
 }
 

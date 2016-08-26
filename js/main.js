@@ -602,7 +602,7 @@ var InternalSubscriptionsOverview = (function (_super) {
         _super.apply(this, arguments);
     }
     InternalSubscriptionsOverview.prototype.render = function () {
-        return React.createElement("div", {className: "ui grid"}, React.createElement(modal_lectureaddition_1.LectureAdditionModal, {addSub: this.props.addSubscription, removeSub: this.props.removeSubscription}), React.createElement(Semantify.Column, {className: "nine wide"}, React.createElement("h3", null, "Updates"), React.createElement(view_updatesfeed_1.LectureSubscriptionUpdates, null)), React.createElement(Semantify.Column, {className: "seven wide"}, React.createElement(view_list_subscription_1.LectureSubscriptions, {addSub: this.props.addSubscription, removeSub: this.props.removeSubscription, subscriptions: this.props.subscriptions})));
+        return React.createElement("div", {className: "ui grid"}, React.createElement(modal_lectureaddition_1.LectureAdditionModal, {addSub: this.props.addSubscription, removeSub: this.props.removeSubscription}), React.createElement(Semantify.Column, {className: "nine wide"}, React.createElement("h3", null, "Unwatched lectures"), React.createElement(view_updatesfeed_1.LectureSubscriptionUpdates, null)), React.createElement(Semantify.Column, {className: "seven wide"}, React.createElement(view_list_subscription_1.LectureSubscriptions, {addSub: this.props.addSubscription, removeSub: this.props.removeSubscription, subscriptions: this.props.subscriptions})));
     };
     return InternalSubscriptionsOverview;
 }(React.Component));
@@ -636,11 +636,11 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var React = require("react");
 var react_router_1 = require("react-router");
+var b64 = require("js-base64");
 var InternalLectureSubscriptionUpdates = (function (_super) {
     __extends(InternalLectureSubscriptionUpdates, _super);
     function InternalLectureSubscriptionUpdates() {
         _super.call(this);
-        this.lastEvents = 0;
         this.state = {
             events: []
         };
@@ -665,7 +665,8 @@ var InternalLectureSubscriptionUpdates = (function (_super) {
                     title: lectures[i_1].title,
                     url: lectures[i_1].url,
                     date: lectures[i_1].date,
-                    subjectCode: subjectCode
+                    subjectCode: subjectCode,
+                    watched: lectures[i_1].watched
                 };
             }
             this.state.events.sort(function (a, b) {
@@ -673,29 +674,41 @@ var InternalLectureSubscriptionUpdates = (function (_super) {
             });
         }
     };
-    InternalLectureSubscriptionUpdates.prototype.componentDidUpdate = function () {
-        this.computeEvents();
-        if (this.lastEvents != this.state.events.length) {
-            this.lastEvents = this.state.events.length;
-            this.setState(this.state);
-        }
-    };
-    InternalLectureSubscriptionUpdates.prototype.componentDidMount = function () {
-        this.componentDidUpdate();
-    };
+    // lastEvents:number = 0;
+    // componentDidUpdate() {
+    //     this.computeEvents();
+    //     if(this.lastEvents != this.state.events.length) {
+    //         this.lastEvents = this.state.events.length;
+    //         this.setState(this.state);
+    //     }
+    // }
+    // componentDidMount() {
+    //     this.componentDidUpdate();
+    // }
     InternalLectureSubscriptionUpdates.prototype.render = function () {
+        var _this = this;
+        this.computeEvents();
         if (this.props.loading) {
             return React.createElement("div", {className: "ui segment"}, React.createElement("p", null), React.createElement("div", {className: "ui active dimmer"}, React.createElement("div", {className: "ui loader"})));
         }
+        var n = 0;
         var subs = this.state.events.map(function (event, i) {
-            if (i > 20) {
+            if (event.watched) {
                 return;
             }
+            if (n > 20) {
+                return;
+            }
+            n++;
             var redirect = "/topic/" + event.subjectCode;
-            return React.createElement("div", {className: "event"}, React.createElement("div", {className: "ui content event"}, React.createElement("div", {className: "summary"}, React.createElement(react_router_1.Link, {to: redirect, className: "user"}, event.subjectCode), " added a new", React.createElement(react_router_1.Link, {to: redirect, className: "user"}, " video"), React.createElement("div", {className: "date"}, event.date, " ago"))));
+            var target = "/vid/" + b64.Base64.encodeURI(event.url);
+            var btnStyle = {
+                cursor: "pointer"
+            };
+            return React.createElement("div", {className: "event"}, React.createElement("div", {className: "ui content event"}, React.createElement("div", {className: "summary"}, React.createElement(react_router_1.Link, {to: redirect, className: "user"}, event.subjectCode), " added a new", React.createElement(react_router_1.Link, {to: target, className: "user"}, " video"), " ", React.createElement("i", {style: btnStyle, className: "checkmark icon", onClick: function () { return _this.props.watchLecture(event.url); }}), React.createElement("div", {className: "date"}, event.date, " ago"))));
         });
         if (this.state.events.length == 0) {
-            subs = [React.createElement("div", null, "Nothing new happened, check back later.")];
+            subs = [React.createElement("div", null, "You're up to date, well done!")];
         }
         return React.createElement("div", {className: "ui relaxed feed"}, subs);
     };
@@ -703,6 +716,7 @@ var InternalLectureSubscriptionUpdates = (function (_super) {
 }(React.Component));
 exports.InternalLectureSubscriptionUpdates = InternalLectureSubscriptionUpdates;
 var react_redux_1 = require("react-redux");
+var actions_1 = require("../actions");
 function mapStateToProps(state) {
     return {
         loading: state.isLoading,
@@ -711,11 +725,15 @@ function mapStateToProps(state) {
     };
 }
 function mapDispatchToProps(dispatch) {
-    return {};
+    return {
+        watchLecture: function (url) {
+            dispatch(actions_1.watchLecture(url));
+        }
+    };
 }
 exports.LectureSubscriptionUpdates = react_redux_1.connect(mapStateToProps, mapDispatchToProps)(InternalLectureSubscriptionUpdates);
 
-},{"react":404,"react-redux":157,"react-router":191}],14:[function(require,module,exports){
+},{"../actions":1,"js-base64":134,"react":404,"react-redux":157,"react-router":191}],14:[function(require,module,exports){
 "use strict";
 var cookie = require("js-cookie");
 var yearOverride;

@@ -19,7 +19,7 @@ class InternalSubscriptionsOverview extends React.Component<{
         return <div className="ui grid">
                 <LectureAdditionModal addSub={this.props.addSubscription} removeSub={this.props.removeSubscription} />
              <Semantify.Column className="nine wide">
-                <h3>Updates</h3>
+                <h3>Unwatched lectures</h3>
                 <LectureSubscriptionUpdates></LectureSubscriptionUpdates>
             </Semantify.Column>
             <Semantify.Column className="seven wide">
