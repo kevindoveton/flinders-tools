@@ -50,18 +50,25 @@ class InternalOptionsModal extends React.Component<{
     render() {
         return <div className="ui modal" id="optionsModal">
             <i className="close icon"></i>
-            <div className="header">Lecture Year Selector</div>
+            <div className="header">Misc. Options and Info</div>
             <div className="content">
                 <div className="description">
-                    <div className="ui header">Type in a year</div>
-                        <div className="ui search" id="addYearSearchBox">
-                            <input className="prompt" id="yearSearchBox" placeholder="Available Years..." type="text" />
-                            <div className="results"></div>
-                        </div>
+                    <div className="ui header">Options</div>
+                    <div className="ui inline fluid search" id="addYearSearchBox">
+                        <label>Year the lecture viewer fetches videos from: </label>
+                        <input className="prompt" id="yearSearchBox" placeholder="Available Years..." type="text" />
+                        <div className="results"></div>
                     </div>
+                    <br />
+                    <div className="ui header">Disclaimer</div>
+                    <h5 className="footer">for <a href="https://flinders.edu.au">flinders university</a> students only</h5>
+                    <h5 className="footer">this page doesn't host any copyrighted content</h5>
+                    <h5 className="footer">this page only retrieves content from official servers and displays them in a user friendly format</h5>
+                    <h5 className="footer">this page nor its creator endorses the illegal distribution of copyrighted content</h5>
                 </div>
-                <div className="actions">
-                    <div className="ui black deny button">Cancel</div>
+            </div>
+            <div className="actions">
+                <div className="ui black deny button">Cancel</div>
                 <div onClick={this.setYear.bind(this)} className="ui positive right labeled icon button">
                     Save
                     <i className="checkmark icon"></i>
