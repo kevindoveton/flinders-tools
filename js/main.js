@@ -705,7 +705,7 @@ var InternalLectureSubscriptionUpdates = (function (_super) {
             var btnStyle = {
                 cursor: "pointer"
             };
-            return React.createElement("div", {className: "event"}, React.createElement("div", {className: "ui content event"}, React.createElement("div", {className: "summary"}, React.createElement(react_router_1.Link, {to: redirect, className: "user"}, event.subjectCode), " added a new", React.createElement(react_router_1.Link, {to: target, className: "user"}, " video"), " ", React.createElement("i", {style: btnStyle, className: "checkmark icon", onClick: function () { return _this.props.watchLecture(event.url); }}), React.createElement("div", {className: "date"}, event.date, " ago"))));
+            return React.createElement("div", {className: "event"}, React.createElement("div", {className: "ui content event"}, React.createElement("div", {className: "summary"}, React.createElement(react_router_1.Link, {to: redirect, className: "user"}, event.subjectCode), " added a new", React.createElement(react_router_1.Link, {to: target, className: "user"}, " video"), React.createElement("div", {className: "date"}, event.date, " ago"), "  ", React.createElement("i", {style: btnStyle, className: "checkmark icon", onClick: function () { return _this.props.watchLecture(event.url); }}))));
         });
         if (this.state.events.length == 0) {
             subs = [React.createElement("div", null, "You're up to date, well done!")];
