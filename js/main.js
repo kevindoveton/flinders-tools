@@ -218,7 +218,7 @@ var LectureVideo = (function (_super) {
             width: "100%"
         };
         var url = (b64.Base64.decode(this.props.params.url));
-        return React.createElement(Semantify.Container, null, React.createElement("div", {className: "ui right floated button", onClick: router.hashHistory.goBack}, "Back"), React.createElement("br", null), React.createElement("br", null), React.createElement("div", null, React.createElement("video", {style: style, className: "video-js vjs-default-skin vjs-big-play-centered", id: "stage-vid", controls: true}, React.createElement("source", {src: url, type: "video/mp4"}))));
+        return React.createElement(Semantify.Container, null, React.createElement("div", {className: "ui right floated button", onClick: router.hashHistory.goBack}, "Back"), React.createElement("a", {className: "ui right floated button", download: true, href: url}, "Direct Link"), React.createElement("br", null), React.createElement("br", null), React.createElement("div", null, React.createElement("video", {style: style, className: "video-js vjs-default-skin vjs-big-play-centered", id: "stage-vid", controls: true}, React.createElement("source", {src: url, type: "video/mp4"}))), React.createElement("div", null, React.createElement("br", null), React.createElement("h4", null, "Tips:"), React.createElement("ul", null, React.createElement("li", null, "Use the arrow keys to skip forwards/backwards 3 seconds at a time"), React.createElement("li", null, "Speed up the lecture to save time"), React.createElement("li", null, "(reading lecture notes before watching a lecture is generally a good idea)"))));
     };
     return LectureVideo;
 }(React.Component));
