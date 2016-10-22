@@ -891,7 +891,7 @@ function migrate() {
             alertify.success("Migration successful! (this should solve some issues with lecture progress being unsaved)", 15);
         }
     }
-    if (_get("lastversion", exports.version) != "version") {
+    if (_get("lastversion", exports.version) != exports.version) {
         alertify.success("Hooray, an update! Hopefully you'll experience less issues with version " + exports.version + " :)", 15);
         _set("lastversion", exports.version);
     }

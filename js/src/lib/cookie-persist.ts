@@ -185,7 +185,7 @@ function migrate() {
         }
     }
 
-    if(_get("lastversion",version) != "version") {
+    if(_get("lastversion",version) != version) {
         alertify.success("Hooray, an update! Hopefully you'll experience less issues with version " + version + " :)",15);
         _set("lastversion",version);
     }
