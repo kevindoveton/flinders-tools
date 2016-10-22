@@ -2,7 +2,9 @@
 
 import * as React from "react";
 
-export class MainInternal extends React.Component<{year},{}> {
+import {version} from "../lib/cookie-persist";
+
+export class MainInternal extends React.Component<{ year }, {}> {
     componentDidMount() {
         window["$"]("#main-title").popup();
     }
@@ -16,7 +18,7 @@ export class MainInternal extends React.Component<{year},{}> {
             "padding-top": "20px"
         };
 
-        $("title").text("Lecture Viewer 3.0");
+        $("title").text("Lecture Viewer " + version);
 
         return <div>
             <div className="ui container" style={style}>
@@ -32,7 +34,7 @@ import {connect} from "react-redux";
 
 import {IAppState} from "../reducers";
 
-function mapStateToProps(state:IAppState) {
+function mapStateToProps(state: IAppState) {
     return {
         year: state.year
     }

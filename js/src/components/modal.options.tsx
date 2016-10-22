@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/index.d.ts" />
 
 import * as React from "react";
+import * as persist from "../lib/cookie-persist";
 
 class InternalOptionsModal extends React.Component<{
     setYear: (year) => void
@@ -9,27 +10,20 @@ class InternalOptionsModal extends React.Component<{
         window["$"]("#optionsModal").modal();
         let list = require("../lib/topics").topicDatabase;
 
+        let years = [];
+
+        for(let i=2011;i <= (new Date().getFullYear());i++) {
+            years[years.length] = {
+                year: i.toString()
+            };
+        }
+
+        years[years.length] = {
+            year: "Current Year"
+        };
+
         window["$"]("#addYearSearchBox").search({
-            source: [
-                {
-                    year: "2011"
-                },
-                {
-                    year: "2012"
-                },
-                {
-                    year: "2013"
-                },
-                {
-                    year: "2014"
-                },
-                {
-                    year: "2015"
-                },
-                {
-                    year: "2016"
-                }
-            ],
+            source: years,
             searchFields: [
                 "year"
             ],
@@ -38,6 +32,8 @@ class InternalOptionsModal extends React.Component<{
                 title: "year"
             }
         });
+
+        $("#yearSearchBox").val(persist.getYearInternal());
     }
 
     setYear() {

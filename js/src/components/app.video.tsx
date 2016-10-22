@@ -9,8 +9,9 @@ import {LectureList} from "./view.lecturelist";
 let LZString = require("lz-string");
 import * as b64 from "js-base64";
 
-export class LectureVideo extends React.Component<{
-    params: any
+class LectureVideoStatic extends React.Component<{
+    params: any,
+    watchLecture:(url:string)=>void,
 },{}> {
     initialise() {}
 
@@ -49,6 +50,9 @@ export class LectureVideo extends React.Component<{
         };
 
         let url = (b64.Base64.decode(this.props.params.url));
+
+        this.props.watchLecture(url);
+
         return <Semantify.Container>
             <div className="ui right floated button" onClick={router.hashHistory.goBack}>Back</div>
             <a className="ui right floated button" download href={url}>Direct Link</a>
@@ -71,3 +75,30 @@ export class LectureVideo extends React.Component<{
         </Semantify.Container>;
     }
 }
+
+import {watchLecture} from "../actions";
+
+import {connect} from "react-redux";
+
+import {IAppState} from "../reducers";
+
+function mapStateToProps(state:IAppState) {
+    return {
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        watchLecture: (url:string) => {
+            dispatch(watchLecture(url));
+        }
+    }
+}
+
+export const LectureVideo = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LectureVideoStatic);
+
+
