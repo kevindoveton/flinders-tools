@@ -33,6 +33,10 @@ class LectureVideoStatic extends React.Component<{
                 1.75,
                 2,
                 2.5,
+                3.0,
+                3.5,
+                4.0,
+                4.5,
             ]
         }, function() {
             // this.play();
