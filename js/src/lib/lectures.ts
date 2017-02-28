@@ -77,7 +77,11 @@ export function getSimple(classID:string) {
     return new Promise<ILectureList>((resolve,reject) => {
         getWithUserDefinedYear(classID,(err,lectures:ILectureList) => {
             if(err) {
-                reject(err);
+                // reject(err);
+                resolve({
+                    lectures: [],
+                    subjectcode: classID,
+                });
             }
             else {
                 resolve(lectures);
