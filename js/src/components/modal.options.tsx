@@ -2,13 +2,14 @@
 
 import * as React from "react";
 import * as persist from "../lib/cookie-persist";
+import {getTopics,fetchTopics} from "../lib/topics";
 
 class InternalOptionsModal extends React.Component<{
     setYear: (year) => void
 },{}> {
     componentDidMount() {
         window["$"]("#optionsModal").modal();
-        let list = require("../lib/topics").topicDatabase;
+        let list = getTopics();
 
         let years = [];
 

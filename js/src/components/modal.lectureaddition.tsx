@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/index.d.ts" />
 
 import * as React from "react";
+import {getTopics} from "../lib/topics";
 
 export class LectureAdditionModal extends React.Component<{
     addSub:(topicCode:string)=>void,
@@ -8,7 +9,7 @@ export class LectureAdditionModal extends React.Component<{
 },{}> {
     componentDidMount() {
         window["$"]("#addLectureModal").modal();
-        let sourcelist = require("../lib/topics").topicDatabase;
+        let sourcelist = getTopics();
 
         let lookup = {};
         let list = [];
