@@ -35,7 +35,10 @@ export function requestSubject(subjectcode:string):any {
         });
 
         return getSimple(subjectcode)
-            .then(lecturelist => dispatch(receiveSubject(subjectcode,lecturelist)));
+            .then(lecturelist => dispatch(receiveSubject(subjectcode,lecturelist)))
+            .catch(() => {
+                console.log(`WARNING: Couldn't load lectures for ${subjectcode}!`);
+            });
     };
 }
 
@@ -57,7 +60,9 @@ export function requestSubscriptions():any {
         let promises:Promise<ILectureList>[] = [];
 
         for(let sub of getSubscriptions()) {
-            promises[promises.length] = getSimple(sub);
+            promises[promises.length] = getSimple(sub).catch(() => {
+                console.log(`WARNING: Couldn't load lectures for ${sub}!`);
+            });;
         }
 
         return Promise.all(promises)
