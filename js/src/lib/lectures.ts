@@ -7,7 +7,7 @@ import * as Promise from "bluebird";
 
 import {getYear,isWatched as _isWatched} from "./cookie-persist";
 
-let topicDatabase = require("./topics");
+import {getTopics} from "./topics"
 
 export interface ILecture {
     url: string;
@@ -96,8 +96,9 @@ export interface ITopic {
 }
 
 export function topicInfo(topicID:string):ITopic {
-    for(let i=0;i < topicDatabase.topicDatabase.length;i++) {
-        let topic = topicDatabase.topicDatabase[i];
+    let topics = getTopics();
+    for(let i=0;i < topics.length;i++) {
+        let topic = topics[i];
         if(topic.code == topicID) {
             return topic;
         }
