@@ -2,7 +2,7 @@ import * as cookie from "js-cookie";
 
 import * as $ from "jquery";
 
-export let version = "3.4";
+export let version = "3.5";
 
 declare var alertify:any;
 
@@ -212,7 +212,7 @@ export function getYearInternal() {
     return _get("ft-lecture-year","Current Year");
 }
 
-export function setYear(year:number) {
+export function setYear(year: (number | "Current Year")) {
     _set("ft-lecture-year",year);
 }
 
@@ -316,5 +316,5 @@ export function addWatched(url:string) {
 // });
 
 if(!getYear() || (getYear() != getYear())) {
-    setYear(2016);
+    setYear("Current Year");
 }

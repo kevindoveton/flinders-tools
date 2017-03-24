@@ -38,7 +38,7 @@ class InternalOptionsModal extends React.Component<{
     }
 
     setYear() {
-        let year = parseInt($("#yearSearchBox").val());
+        let year = $("#yearSearchBox").val();
         $("#yearSearchBox").val("");
 
         this.props.setYear(year);

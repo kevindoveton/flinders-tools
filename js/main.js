@@ -386,7 +386,7 @@ var InternalOptionsModal = (function (_super) {
         $("#yearSearchBox").val(persist.getYearInternal());
     };
     InternalOptionsModal.prototype.setYear = function () {
-        var year = parseInt($("#yearSearchBox").val());
+        var year = $("#yearSearchBox").val();
         $("#yearSearchBox").val("");
         this.props.setYear(year);
     };
@@ -757,7 +757,7 @@ exports.LectureSubscriptionUpdates = react_redux_1.connect(mapStateToProps, mapD
 },{"../actions":1,"js-base64":135,"react":406,"react-redux":159,"react-router":193}],14:[function(require,module,exports){
 "use strict";
 var cookie = require("js-cookie");
-exports.version = "3.4";
+exports.version = "3.5";
 require("persist-js");
 var yearOverride;
 var legacy;
@@ -1015,7 +1015,7 @@ store = new Persist.Store("flinders-tools");
 migrate();
 // });
 if (!getYear() || (getYear() != getYear())) {
-    setYear(2016);
+    setYear("Current Year");
 }
 
 },{"js-cookie":136,"persist-js":152}],15:[function(require,module,exports){
